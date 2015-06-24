@@ -3,6 +3,8 @@ module OrigenAppGenerators
   class Base < Origen::CodeGenerators::Base
     include Origen::Utility::InputCapture
 
+    require 'gems'
+
     def set_source_paths
       # The base Origen generator puts the Origen core directory on the source path, in retrospect this
       # was a bad idea and makes for hard to debug errors if an app generator resolves a template from
@@ -29,12 +31,7 @@ module OrigenAppGenerators
     end
 
     def get_lastest_origen_version
-      prod = Origen.client.latest_production
-      if prod.condition_met?('< 2.5.0')
-        @latest_origen_version = Origen.client.latest_development
-      else
-        @latest_origen_version = prod
-      end
+      (Gems.info 'origen')['version']
     end
 
     protected
