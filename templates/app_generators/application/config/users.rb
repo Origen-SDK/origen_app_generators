@@ -14,7 +14,7 @@ module Origen
       @users ||= [
 
         # Admins - Notified on every tag
-        User.new("<%= User.current.name %>", "<%= User.current.core_id %>", :admin),
+        User.new("<%= User.current.name %>", "<%= User.current.id %>", :admin),
 
         # Users - Notified on official release tags only
         #User.new("Stephen McGinty", "r49409"),

@@ -1,7 +1,7 @@
 require 'origen'
 class <%= @namespace %>Application < Origen::Application
 
-  # See http://origen.freescale.net/origen/latest/api/Origen/Application/Configuration.html
+  # See http://origen-sdk.org/origen/latest/api/Origen/Application/Configuration.html
   # for a full list of the configuration options available
 
   # These attributes should never be changed, the duplication here will be resolved in future
@@ -10,22 +10,19 @@ class <%= @namespace %>Application < Origen::Application
   self.namespace  = "<%= @namespace %>"
   config.name     = "<%= @name %>"
   config.initials = "<%= @namespace %>"
-  config.vault    = "<%= @vault %>" 
+  config.rc_url    = "" 
 
   # To enable deployment of your documentation to a web server (via the 'origen web'
-  # command) fill in these attributes. The example here is configured to deploy to
-  # the origen.freescale.net domain, which is an easy option if you don't have another
-  # server already in mind. To do this you will need an account on CDE and to be a member
-  # of the 'origen' group.
+  # command) fill in these attributes.
   config.web_directory = "/proj/.web_origen/html/<%= @name %>"
-  config.web_domain = "http://origen.freescale.net/<%= @name %>"
+  config.web_domain = "http://origen-sdk.org/<%= @name %>"
 
   # When false Origen will be less strict about checking for some common coding errors,
   # it is recommended that you leave this to true for better feedback and easier debug.
   # This will be the default setting in Origen v3.
   config.strict_errors = true
 
-  # See: http://origen.freescale.net/origen/latest/guides/utilities/lint/
+  # See: http://origen-sdk.org/origen/latest/guides/utilities/lint/
   config.lint_test = {
     # Require the lint tests to pass before allowing a release to proceed
     run_on_tag: true,

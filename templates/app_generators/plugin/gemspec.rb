@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Add any gems that your plugin needs to run within a host application
-  spec.add_runtime_dependency "origen_core", ">= <%= @latest_origen_version %>"
+  spec.add_runtime_dependency "origen", ">= <%= @latest_origen_version %>"
 <% if @runtime_dependencies -%>  
   <% @runtime_dependencies.each do |dep| -%>
   spec.add_runtime_dependency <%= dep.map{ |d| "\"#{d}\"" }.join(', ') %>

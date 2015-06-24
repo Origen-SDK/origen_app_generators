@@ -5,6 +5,7 @@ class OrigenAppGeneratorsApplication < Origen::Application
   config.name     = "Origen App Generators"
   config.initials = "Origen_App_Generators"
   config.rc_url   = "ssh://git@github.com:Origen-SDK/origen_app_generators.git"
+  config.release_externally = true
 
   # To enable deployment of your documentation to a web server (via the 'origen web'
   # command) fill in these attributes. The example here is configured to deploy to

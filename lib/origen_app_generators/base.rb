@@ -27,11 +27,11 @@ module OrigenAppGenerators
 
     def get_common_user_input
       get_name_and_namespace
-      get_revision_control
+      # get_revision_control
     end
 
     def get_lastest_origen_version
-      (Gems.info 'origen')['version']
+      @latest_origen_version = (Gems.info 'origen')['version']
     end
 
     protected
@@ -125,7 +125,6 @@ module OrigenAppGenerators
         proposal = @name.to_s.camelize
       end
       proposal = nil if proposal.length < 3
-      proposal.gsub(/Rgen/i, 'Origen') if proposal
 
       valid = false
       until valid
