@@ -55,7 +55,11 @@ module OrigenAppGenerators
         web_installation:   { source: 'templates/web/docs/environment/installation.md.erb' },
         web_introduction:   { source: 'templates/web/docs/environment/introduction.md.erb' },
         rakefile:           { source: 'Rakefile' },
-        gemfile:            { source: 'Gemfile' }
+        gemfile:            { source: 'Gemfile' },
+        gitignore:          { source: '.gitignore' },
+        irbrc:              { source: '.irbrc' },
+        rspec:              { source: '.rspec' },
+        travis:             { source: '.travis.yml' }
       }
     end
   end
