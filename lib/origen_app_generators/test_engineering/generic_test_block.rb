@@ -12,6 +12,7 @@ module OrigenAppGenerators
       end
 
       def add_requires
+      fail "yo"
         prepend_to_file "lib/#{@name}.rb", "require 'origen_testers'\n"
       end
 

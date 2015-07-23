@@ -13,7 +13,8 @@ module OrigenAppGenerators
 
   TEST_INPUTS = [
     ['0', 'application', :default, :default],
-    ['0', 'plugin', :default, :default, 'A cool plugin', 'yes']
+    ['1', '0', :default, :default, 'A test block', 'yes'],
+    ['0', 'plugin', :default, :default, 'A cool plugin', 'yes'],
   ]
 
   # If adding any new generators manually always add them at the top, but
