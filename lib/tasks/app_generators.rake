@@ -25,7 +25,14 @@ desc 'Test that all generators build'
 task :regression do
   OrigenAppGenerators::TEST_INPUTS.each do |inputs|
     str = inputs.map { |i| i == :default ? "\n" : "#{i}\n" }.join('')
-    exit 1 unless system "echo '#{str}' | rake test && cd tmp && origen -v"
+    # Test the app can build
+    exit 1 unless system "echo '#{str}' | rake test"
+    # Test the app can boot
+    Bundler.with_clean_env do
+      Dir.chdir 'tmp' do
+        exit 1 unless system "bundle && bundle exec origen -v"
+      end
+    end
   end
 end
 
