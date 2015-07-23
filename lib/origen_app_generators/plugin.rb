@@ -5,7 +5,6 @@ module OrigenAppGenerators
       get_name_and_namespace
       get_summary
       get_revision_control
-      fail "yo"
     end
 
     protected
