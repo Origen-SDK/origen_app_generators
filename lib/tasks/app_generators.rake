@@ -6,7 +6,8 @@ end
 desc 'Test run the new app process'
 task :test do
   _delete_tmp_dir
-  _execute_generator(:invoke)
+  result = _execute_generator(:invoke)
+  exit 1 unless result
 end
 
 desc "Test run a specific generator: rake 'run[TestEngineering::GenericTestBlock]'"
@@ -24,7 +25,7 @@ desc 'Test that all generators build'
 task :regression do
   OrigenAppGenerators::TEST_INPUTS.each do |inputs|
     str = inputs.map { |i| i == :default ? "\n" : "#{i}\n" }.join('')
-    system "echo '#{str}' | rake test"
+    exit 1 unless system "echo '#{str}' | rake test && cd tmp && origen -v"
   end
 end
 
@@ -38,9 +39,11 @@ def _execute_generator(klass)
   cmd = "#{boot} #{origen_lib} #{klass}"
   cmd = "ruby #{cmd}" if Origen.running_on_windows?
   # puts cmd
+  result = false
   Bundler.with_clean_env do
-    system cmd
+    result = system cmd
   end
+  result
 end
 
 def _delete_tmp_dir
