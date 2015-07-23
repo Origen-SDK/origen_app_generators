@@ -20,6 +20,14 @@ task :run, [:generator_class] do |_t, args|
   _execute_generator(klass)
 end
 
+desc "Test that all generators build"
+task :regression do
+  OrigenAppGenerators::TEST_INPUTS.each do |inputs|
+    str = inputs.map { |i| i == :default ? "\n" : "#{i}\n" }.join('')
+    system "echo '#{str}' | rake test"
+  end
+end
+
 def _execute_generator(klass)
   # With the generator identified this now launches it in a standalone shell
   # This is to emulate how it will run in real life and cause it to fail if there are

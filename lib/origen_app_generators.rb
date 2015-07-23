@@ -11,6 +11,11 @@ require 'origen_app_generators/test_engineering/generic_test_block'
 module OrigenAppGenerators
   extend Origen::Utility::InputCapture
 
+  TEST_INPUTS = [
+    ["0", "application", :default, :default],
+    ["0", "plugin", :default, :default, "A cool plugin", "yes"],
+  ]
+
   # If adding any new generators manually always add them at the top, but
   # generally speaking don't, use 'rake new' to create a new generator instead
   AVAILABLE = {
