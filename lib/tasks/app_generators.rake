@@ -20,7 +20,7 @@ task :run, [:generator_class] do |_t, args|
   _execute_generator(klass)
 end
 
-desc "Test that all generators build"
+desc 'Test that all generators build'
 task :regression do
   OrigenAppGenerators::TEST_INPUTS.each do |inputs|
     str = inputs.map { |i| i == :default ? "\n" : "#{i}\n" }.join('')

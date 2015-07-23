@@ -12,8 +12,8 @@ module OrigenAppGenerators
   extend Origen::Utility::InputCapture
 
   TEST_INPUTS = [
-    ["0", "application", :default, :default],
-    ["0", "plugin", :default, :default, "A cool plugin", "yes"],
+    ['0', 'application', :default, :default],
+    ['0', 'plugin', :default, :default, 'A cool plugin', 'yes']
   ]
 
   # If adding any new generators manually always add them at the top, but
