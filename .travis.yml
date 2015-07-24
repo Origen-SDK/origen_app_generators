@@ -3,6 +3,7 @@ rvm:
   - 2.1.0
   - 2.2.2
 script:
+  - gem install bundler
   - bundle exec origen -v
   - bundle exec rake regression
     #- bundle exec origen web compile --no-serve
