@@ -21,8 +21,8 @@ FileUtils.rm_rf tmp_dir if File.exist?(tmp_dir)
 FileUtils.mkdir_p tmp_dir
 
 begin
+  require 'origen'
   Dir.chdir tmp_dir do
-    require 'origen'
     # For some reason this is not being defined by required origen anymore
     User = Origen::Users::User unless defined? User
     if RUBY_VERSION >= '2.0.0'

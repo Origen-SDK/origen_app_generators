@@ -1,8 +1,8 @@
 module OrigenAppGenerators
   module TestEngineering
     # Generates a generic plugin shell
-    class GenericTestBlock < Plugin
-      desc 'A generic test block'
+    class TestBlock < Plugin
+      desc 'A test block intended to plugin into a top-level application'
 
       def generate_files
         @runtime_dependencies = [

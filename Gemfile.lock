@@ -141,6 +141,3 @@ PLATFORMS
 DEPENDENCIES
   byebug (~> 3.5)
   origen_app_generators!
-
-BUNDLED WITH
-   1.10.5

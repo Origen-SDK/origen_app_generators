@@ -36,6 +36,19 @@ module OrigenAppGenerators
 
     protected
 
+    def debugger
+      require 'byebug'
+      byebug
+    end
+
+    def plugin?
+      type == :plugin
+    end
+
+    def application?
+      !plugin?
+    end
+
     def self.title
       desc.sub(/^An? /, '').titleize
     end
@@ -118,8 +131,9 @@ module OrigenAppGenerators
       puts "SELECT YOUR #{type.to_s.upcase}'S NAMESPACE"
       puts
       puts "All #{type} code needs to reside in a unique namespace, this prevents naming collisions with 3rd party plugins."
-      puts 'By Ruby conventions this must start with a capital letter and should ideally be CamelCased and not use underscores'
-      puts 'Some examples:: C40TFSNVMTester, CAPIOrigen, LS2080, ApacheOrigen'
+      puts 'By Ruby conventions, this must start with a capital letter and should ideally be CamelCased and not use underscores.'
+      #puts 'Some examples:: C40TFSNVMTester, CAPIOrigen, LS2080, ApacheOrigen'
+      [@namespace_advice].each { |l| puts l } if @namespace_advice
       puts
       if !proposal && @name
         proposal = @name.to_s.camelize
@@ -175,7 +189,7 @@ module OrigenAppGenerators
       puts "WHAT DO YOU WANT TO CALL YOUR NEW #{type.to_s.upcase}?"
       puts
       puts "This should be lowercased and underscored and will be used to uniquely identify your #{type} within the Origen ecosystem."
-      puts 'Some examples: c40tfs_nvm_tester, capi_origen, ls2080, apache_origen'
+      [@name_advice].each { |l| puts l } if @name_advice
       puts
       valid = false
       until valid

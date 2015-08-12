@@ -4,7 +4,8 @@ module OrigenAppGenerators
     def get_common_user_input
       get_name_and_namespace
       get_summary
-      get_revision_control
+      get_audience
+      #get_revision_control
     end
 
     protected
@@ -18,9 +19,11 @@ module OrigenAppGenerators
         list.delete(:web_defintions)
         list.delete(:web_installation)
         list.delete(:web_introduction)
-        list[:config_development] = { source: 'config/development.rb' }
         list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }
         list[:templates_shared] = { dest: 'templates/shared', type: :directory }
+        if @audience == :external
+          list[:travis] = { source: '.travis.yml' }
+        end
         list
       end
     end
@@ -30,6 +33,18 @@ module OrigenAppGenerators
       puts 'DESCRIBE YOUR NEW PLUGIN IN A FEW WORDS'
       puts
       @summary = get_text(single: true)
+    end
+
+    # Prompts the user to say whether the new plugin is intended for an internal
+    # or external audience (meaning it will published to rubygems.org)
+    def get_audience(proposal = nil)
+      puts
+      puts "IS THIS PLUGIN GOING TO BE RELEASED TO AN EXTERNAL AUDIENCE?"
+      puts
+      puts "By answering yes..."
+      puts
+      confirm_external = get_text(confirm: :return_boolean, default: 'no')
+      @audience = :external if confirm_external
     end
 
     def type

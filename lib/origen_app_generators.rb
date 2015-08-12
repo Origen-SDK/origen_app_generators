@@ -6,22 +6,24 @@ require 'origen_app_generators/plugin'
 require 'origen_app_generators/generic_application'
 require 'origen_app_generators/generic_plugin'
 require 'origen_app_generators/new'
-require 'origen_app_generators/test_engineering/generic_test_block'
+require 'origen_app_generators/test_engineering/test_block'
+require 'origen_app_generators/test_engineering/stand_alone_application'
 
 module OrigenAppGenerators
   extend Origen::Utility::InputCapture
 
   TEST_INPUTS = [
-    ['0', 'application', :default, :default],
+    ['0', '0', :default, :default],
     ['1', '0', :default, :default, 'A test block', 'yes'],
-    ['0', 'plugin', :default, :default, 'A cool plugin', 'yes']
+    ['0', '1', :default, :default, 'A cool plugin', 'yes']
   ]
 
   # If adding any new generators manually always add them at the top, but
   # generally speaking don't, use 'rake new' to create a new generator instead
   AVAILABLE = {
     'Test Engineering' => [
-      OrigenAppGenerators::TestEngineering::GenericTestBlock
+      OrigenAppGenerators::TestEngineering::StandAloneApplication,
+      OrigenAppGenerators::TestEngineering::TestBlock
     ]
   }
 
@@ -45,11 +47,16 @@ module OrigenAppGenerators
       puts
       puts "WHAT TYPE OF APPLICATION DO YOU WANT TO BUILD? (if you don't know go with 'application')"
       puts
-      type = get_text(single: true, default: 'application', accept: %w(application plugin)).downcase.to_sym
+      puts "0 - Application"
+      puts "1 - Plugin"
+      puts
+      accept = [0,1]
+      selection = get_text(single: true, accept: accept, default: 0).to_i
 
-      if type == :application
+      case selection
+      when 0
         OrigenAppGenerators::GenericApplication.start [path]
-      else
+      when 1
         OrigenAppGenerators::GenericPlugin.start [path]
       end
     else

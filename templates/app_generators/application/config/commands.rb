@@ -1,11 +1,4 @@
-# This file should be used to extend the origen command line tool with tasks 
-# specific to your application.
-# The comments below should help to get started and you can also refer to
-# lib/origen/commands.rb in your Origen core workspace for more examples and 
-# inspiration.
-#
-# Also see the official docs on adding commands:
-#   http://origen.freescale.net/origen/latest/guides/custom/commands/
+# This file should be used to extend the origen with application specific commands
 
 # Map any command aliases here, for example to allow 'origen ex' to refer to a 
 # command called execute you would add a reference as shown below: 
@@ -24,7 +17,7 @@ case @command
 # in here or you can require an external file if preferred.
 when "my_command"
   puts "Doing something..."
-  require "commands/my_command"    # Would load file lib/commands/my_command.rb
+  #require "commands/my_command"    # Would load file lib/commands/my_command.rb
   # You must always exit upon successfully capturing a command to prevent 
   # control flowing back to Origen
   exit 0
@@ -32,13 +25,11 @@ when "my_command"
 ## Example of how to make a command to run unit tests, this simply invokes RSpec on
 ## the spec directory
 #when "specs"
-#  ARGV.unshift "spec"
 #  require "rspec"
-#  require "rspec/autorun"
-#  exit 0 # This will never be hit on a fail, RSpec will automatically exit 1
+#  exit RSpec::Core::Runner.run(['spec'])
 
 ## Example of how to make a command to run diff-based tests
-#when "examples"  
+#when "examples", "test"
 #  Origen.load_application
 #  status = 0
 #
@@ -60,6 +51,12 @@ when "my_command"
 #    status = 1
 #  end
 #  puts
+#  if @command == "test"
+#    Origen.app.unload_target!
+#    require "rspec"
+#    result = RSpec::Core::Runner.run(['spec'])
+#    status = status == 1 ? 1 : result
+#  end
 #  exit status  # Exit with a 1 on the event of a failure per std unix result codes
 
 # Always leave an else clause to allow control to fall back through to the
@@ -71,6 +68,7 @@ else
 #  @application_commands = <<-EOT
 # specs        Run the specs (tests), -c will enable coverage
 # examples     Run the examples (tests), -c will enable coverage
+# test         Run both specs and examples, -c will enable coverage
 #  EOT
 
 end 

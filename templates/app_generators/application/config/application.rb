@@ -10,7 +10,10 @@ class <%= @namespace %>Application < Origen::Application
   self.namespace  = "<%= @namespace %>"
   config.name     = "<%= @name %>"
   config.initials = "<%= @namespace %>"
-  config.rc_url    = "" 
+  config.rc_url   = "" 
+<% if @audience == :external -%>
+  config.release_externally = true
+<% end -%>
 
   # To enable deployment of your documentation to a web server (via the 'origen web'
   # command) fill in these attributes.
@@ -62,16 +65,10 @@ class <%= @namespace %>Application < Origen::Application
  
   # This will automatically deploy your documentation after every tag
   def after_release_email(tag, note, type, selector, options)
-    deployer = Origen.app.deployer
-    if deployer.running_on_cde? && deployer.user_belongs_to_origen?
-      command = "origen web compile --remote --api"
-      if Origen.app.version.production?
-        command += " --archive #{Origen.app.version.prefixed}"
-      end
-      Dir.chdir Origen.root do
-        system command
-      end
-    end 
+    command = "origen web compile --remote --api"
+    Dir.chdir Origen.root do
+      system command
+    end
   end
 
   # Ensure that all tests pass before allowing a release to continue
