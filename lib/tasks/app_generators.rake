@@ -35,7 +35,7 @@ task :regression do
         commands.each do |command|
           unless system("bundle exec #{command}")
             Origen.app.stats.report_fail
-            exit 1 
+            exit 1
           end
         end
       end
