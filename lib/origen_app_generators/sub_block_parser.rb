@@ -5,11 +5,11 @@ module OrigenAppGenerators
     def parse(str)
       r = {}
       split(str).each do |tag|
-        tag, i = extract_instantiations(tag)
+        tag, i = extract_instances(tag)
         name, children = extract_children(tag)
         name = camelize(name)
         r[name] = {}
-        r[name][:instantiations] = i if i
+        r[name][:instances] = i if i
         r[name][:children] = children if children
       end
       r
@@ -58,7 +58,7 @@ module OrigenAppGenerators
       end
     end
 
-    def extract_instantiations(tag)
+    def extract_instances(tag)
       if tag.strip =~ /(.*)\((\d+)\)$/
         [$1, $2.to_i]
       else

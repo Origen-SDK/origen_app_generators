@@ -109,6 +109,7 @@ module OrigenAppGenerators
           if file[:copy] || dest =~ /.erb$/
             copy_file(file[:source], dest)
           else
+            @options = file[:options] || {}
             template(file[:source], dest)
           end
         end

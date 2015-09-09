@@ -1,5 +1,6 @@
 module OrigenAppGenerators
   module TestEngineering
+    require 'origen_app_generators/sub_block_parser'
     # Generates a generic application shell
     class StandAloneApplication < Application
       desc 'A stand alone test engineering application'
@@ -35,6 +36,10 @@ module OrigenAppGenerators
       end
 
       protected
+
+      def sub_block_parser
+        @sub_block_parser ||= SubBlockParser.new
+      end
 
       def get_top_level_names
         puts
@@ -80,15 +85,49 @@ module OrigenAppGenerators
 
         valid = false
         until valid
-          @top_level_names = get_text(single: true).strip.split(',').map do |name|
-            name.strip.gsub(/\s+/, '_').camelize
-          end
-          unless @top_level_names.empty?
-            # Should we check anything here?
+          input = get_text(single: true).strip
+          if input.empty?
+            @sub_blocks_lookup = {}
             valid = true
+          else
+            begin
+              @sub_blocks_lookup = sub_block_parser.parse(input)
+              valid = true
+            rescue
+              valid = false
+            end
           end
         end
-        @top_level_names
+        @sub_blocks_lookup
+      end
+
+      def top_level_sub_blocks
+        blocks = {}
+        # Make sure that each top-level object has a sub blocks assignment
+        if @top_level_names.any?{ |n| @sub_blocks_lookup[n] }
+          @top_level_names.each do |name|
+            if @sub_blocks_lookup[name]
+              blocks[name] = @sub_blocks_lookup[name][:children] || {}
+            else
+              blocks[name] = {}
+            end
+          end
+        # Duplicate the given sub blocks to all top-level objects if none have been specified
+        else
+          @top_level_names.each do |name|
+            blocks[name] = @sub_blocks_lookup
+          end
+        end
+        blocks
+      end
+
+      def sub_blocks
+        blocks = {}
+        top_level_sub_blocks.each do |top, attrs|
+          attrs.each do |name, attrs|
+
+          end
+        end
       end
 
       # Defines the filelist for the generator, the default list is inherited from the
@@ -111,11 +150,29 @@ module OrigenAppGenerators
         @filelist ||= begin
           list = super  # Always pick up the parent list
           # Example of how to remove a file from the parent list
-          # list.delete(:web_doc_layout)
+          list.delete(:lib_top_level)
+          list.delete(:target_debug)
+          list.delete(:target_production)
+          list.delete(:target_default)
           # Example of how to add a file, in this case the file will be compiled and copied to
           # the same location in the new app
+          @top_level_names.each_with_index do |name, i|
+            list["top_level_model_#{i}"] = { source: 'lib/top_level.rb',
+                                             dest:   "lib/#{@name}/models/#{name.underscore}.rb",
+                                             options: {name: name, sub_blocks: top_level_sub_blocks[name]}
+                                           }
+            list["target_#{name}"] = { source: 'target/top_level.rb',
+                                       dest:   "target/#{name.underscore}.rb",
+                                       options: {name: name}
+                                     }
+            if i == 0
+              list[:target_default] =  { source: "#{name.underscore}.rb", # Relative to the file being linked to
+                                           dest: 'target/default.rb',     # Relative to destination_root
+                                           type: :symlink }
+            end
+          end
           list[:top_level_controller] = { source: 'lib/top_level_controller.rb',
-                                          dest:   "lib/#{@name}/top_level_controller.rb" }
+                                          dest:   "lib/#{@name}/controllers/top_level_controller.rb" }
           list[:environment_j750] = { source: 'environment/j750.rb' }
           list[:environment_uflex] = { source: 'environment/uflex.rb' }
           list[:environment_v93k] = { source: 'environment/v93k.rb' }
