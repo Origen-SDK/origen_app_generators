@@ -30,7 +30,7 @@ task :regression do
     # Test the app can boot
     Bundler.with_clean_env do
       Dir.chdir 'tmp' do
-        exit 1 unless system "bundle && bundle exec origen -v"
+        exit 1 unless system 'bundle && bundle exec origen -v'
       end
     end
   end
@@ -43,7 +43,7 @@ def _execute_generator(klass)
 
   boot = "#{File.expand_path(File.dirname(__FILE__))}/boot.rb"
   origen_lib = "#{Origen.top}/lib"
-  origen_lib = "/proj/mem_c40tfs_testeng/r49409/origen/lib"
+  origen_lib = '/proj/mem_c40tfs_testeng/r49409/origen/lib'
   cmd = "#{boot} #{origen_lib} #{klass}"
   cmd = "ruby #{cmd}" if Origen.running_on_windows?
   # puts cmd

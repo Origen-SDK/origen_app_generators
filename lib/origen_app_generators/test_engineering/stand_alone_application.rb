@@ -2,13 +2,12 @@ module OrigenAppGenerators
   module TestEngineering
     # Generates a generic application shell
     class StandAloneApplication < Application
-
-      desc "A stand alone test engineering application"
+      desc 'A stand alone test engineering application'
 
       # Any methods that are not protected will get invoked in the order that they are
       # defined when the generator is run, method naming is irrelevant unless you want
       # to override a method that is defined by the parent class
-      
+
       def get_user_input
         # The methods to get the common user input that applies to all applications will
         # get called at the start automatically, you have a chance here to ask any additional
@@ -18,7 +17,7 @@ module OrigenAppGenerators
       def generate_files
         # Calling this will build all files, directories and symlinks contained in the
         # hash returned by the filelist method
-        build_filelist 
+        build_filelist
       end
 
       def modify_files
@@ -55,25 +54,27 @@ module OrigenAppGenerators
         @filelist ||= begin
           list = super  # Always pick up the parent list
           # Example of how to remove a file from the parent list
-          #list.delete(:web_doc_layout)
+          # list.delete(:web_doc_layout)
           # Example of how to add a file, in this case the file will be compiled and copied to
           # the same location in the new app
           list[:top_level_controller] = { source: 'lib/top_level_controller.rb',
                                           dest:   "lib/#{@name}/top_level_controller.rb" }
+          list[:environment_j750] = { source: 'environment/j750.rb' }
+          list[:environment_uflex] = { source: 'environment/uflex.rb' }
+          list[:environment_v93k] = { source: 'environment/v93k.rb' }
           # Alternatively specifying a different destination, typically you would do this when
           # the final location is dynamic
-          #list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }
+          # list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }
           # Example of how to create a directory
-          #list[:pattern_dir] = { dest: "pattern", type: :directory }
+          # list[:pattern_dir] = { dest: "pattern", type: :directory }
           # Example of how to create a symlink
-          #list[:target_default] = { source: 'debug.rb',          # Relative to the file being linked to
-          #                          dest:   'target/default.rb', # Relative to destination_root
-          #                          type:   :symlink }
+          list[:environment_default] = { source: 'j750.rb',          # Relative to the file being linked to
+                                         dest:   'environment/default.rb', # Relative to destination_root
+                                         type:   :symlink }
           # Remember to return the final list
           list
         end
       end
-
     end
   end
 end

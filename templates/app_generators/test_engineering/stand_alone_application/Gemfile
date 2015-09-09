@@ -5,6 +5,10 @@ source '<%= Origen.site_config.gem_server %>'
 
 gem 'origen', '>= <%= @latest_origen_version %>'
 
+gem 'origen_testers'
+
+gem 'origen_debuggers'
+
 gem 'origen_doc_helpers'
 
 gem 'byebug', '~>3.5'

@@ -5,7 +5,7 @@ module OrigenAppGenerators
       get_name_and_namespace
       get_summary
       get_audience
-      #get_revision_control
+      # get_revision_control
     end
 
     protected
@@ -39,9 +39,9 @@ module OrigenAppGenerators
     # or external audience (meaning it will published to rubygems.org)
     def get_audience(proposal = nil)
       puts
-      puts "IS THIS PLUGIN GOING TO BE RELEASED TO AN EXTERNAL AUDIENCE?"
+      puts 'IS THIS PLUGIN GOING TO BE RELEASED TO AN EXTERNAL AUDIENCE?'
       puts
-      puts "By answering yes..."
+      puts 'By answering yes...'
       puts
       confirm_external = get_text(confirm: :return_boolean, default: 'no')
       @audience = :external if confirm_external

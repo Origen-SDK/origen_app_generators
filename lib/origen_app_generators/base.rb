@@ -38,7 +38,7 @@ module OrigenAppGenerators
 
     def debugger
       require 'byebug'
-      byebug
+      byebug # rubocop:disable Lint/Debugger
     end
 
     def plugin?
@@ -132,7 +132,7 @@ module OrigenAppGenerators
       puts
       puts "All #{type} code needs to reside in a unique namespace, this prevents naming collisions with 3rd party plugins."
       puts 'By Ruby conventions, this must start with a capital letter and should ideally be CamelCased and not use underscores.'
-      #puts 'Some examples:: C40TFSNVMTester, CAPIOrigen, LS2080, ApacheOrigen'
+      # puts 'Some examples:: C40TFSNVMTester, CAPIOrigen, LS2080, ApacheOrigen'
       [@namespace_advice].each { |l| puts l } if @namespace_advice
       puts
       if !proposal && @name
