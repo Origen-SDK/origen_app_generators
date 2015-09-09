@@ -13,9 +13,9 @@ module OrigenAppGenerators
   extend Origen::Utility::InputCapture
 
   TEST_INPUTS = [
-    ['0', '0', :default, :default],
-    ['1', '0', :default, :default, 'A test block', 'yes'],
-    ['0', '0', :default, :default]
+    ['0', '0', :default, :default, ['origen -v']],
+    ['1', '0', :default, :default, 'A test block', 'yes', ['origen -v']],
+    ['0', '0', :default, :default, ['origen -v']]
   ]
 
   # If adding any new generators manually always add them at the top, but
