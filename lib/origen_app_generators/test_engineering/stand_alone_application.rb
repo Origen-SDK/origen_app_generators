@@ -80,7 +80,7 @@ module OrigenAppGenerators
 
         valid = false
         until valid
-          @top_level_names = get_text(single: true, default: 'TopLevel').strip.split(',').map do |name|
+          @top_level_names = get_text(single: true).strip.split(',').map do |name|
             name.strip.gsub(/\s+/, '_').camelize
           end
           unless @top_level_names.empty?

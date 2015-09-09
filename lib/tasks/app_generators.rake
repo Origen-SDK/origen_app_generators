@@ -4,9 +4,16 @@ task :new do
 end
 
 desc 'Test run the new app process'
-task :test do
+task :test, [:set] do |t, args|
   _delete_tmp_dir
-  result = _execute_generator(:invoke)
+  if args[:set]
+    vals = OrigenAppGenerators::TEST_INPUTS[args[:set].to_i]
+    vals.pop # Throw away the test commands
+    str = vals.map { |i| i == :default ? "\n" : "#{i}\n" }.join('')
+    result = system "echo '#{str}' | rake test"
+  else
+    result = _execute_generator(:invoke)
+  end
   exit 1 unless result
 end
 
