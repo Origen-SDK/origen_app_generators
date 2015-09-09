@@ -18,7 +18,7 @@ module OrigenAppGenerators
     # Generic plugin
     ['0', '1', :default, :default, 'A test block', 'yes', []],
     # Stand alone test engineering app
-    ['1', '0', :default, :default, []] # , 'origen g example']],
+    ['1', '0', :default, :default, ['origen g example']],
   ]
 
   # If adding any new generators manually always add them at the top, but

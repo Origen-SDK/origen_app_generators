@@ -18,20 +18,13 @@ aliases ={
 @command = aliases[@command] || @command
 
 ## Now branch to the specific task code
-#case @command
-#
-## Run the unit tests  
-#when "specs"
-#  ARGV.unshift "spec"
-#  require "rspec"
-#  # For some unidentified reason Rspec does not autorun on this version
-#  if RSpec::Core::Version::STRING && RSpec::Core::Version::STRING == "2.11.1"
-#    RSpec::Core::Runner.run ARGV
-#  else
-#    require "rspec/autorun"
-#  end
-#  exit 0 # This will never be hit on a fail, RSpec will automatically exit 1
-#
+case @command
+
+# Run the unit tests  
+when "specs"
+  require "rspec"
+  exit RSpec::Core::Runner.run(['spec'])
+
 ## Run the example-based (diff) tests
 #when "examples"  
 #  Origen.load_application
@@ -62,14 +55,9 @@ aliases ={
 ## You probably want to also add the command details to the help shown via
 ## origen -h, you can do this be assigning the required text to @application_commands
 ## before handing control back to Origen. Un-comment the example below to get started.
-#else
-#  @application_commands = <<-EOT
-# specs        Run the specs (tests), -c will enable coverage
-# examples     Run the examples (tests), -c will enable coverage
-#  EOT
-#
-#  # Uncomment the following and update the path with the file
-#  # that handles the commands that are shared from this plugin
-#  #require "#{Origen.app_root}/config/shared_commands"
-#
-#end 
+else
+  @application_commands = <<-EOT
+ specs        Run the specs (tests), -c will enable coverage
+  EOT
+
+end 
