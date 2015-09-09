@@ -31,8 +31,9 @@ task :regression do
     # Test the app can boot
     Bundler.with_clean_env do
       Dir.chdir 'tmp' do
+        system('bundle')
         commands.each do |command|
-          unless system(command)
+          unless system("bundle exec #{command}")
             Origen.app.stats.report_fail
             exit 1 
           end
