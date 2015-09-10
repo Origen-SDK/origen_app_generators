@@ -183,8 +183,10 @@ module OrigenAppGenerators
                                              options: { name: name, sub_blocks: top_level_sub_blocks[name] }
                                            }
 
-            list["top_level_controller_#{i}"] = { source: 'lib/top_level_controller.rb',
-                                                  dest:   "lib/#{@name}/#{name.underscore}_controller.rb" }
+            list["top_level_controller_#{i}"] = { source:  'lib/top_level_controller.rb',
+                                                  dest:    "lib/#{@name}/#{name.underscore}_controller.rb",
+                                                  options: { name: name }
+                                                }
 
             list["target_#{name}"] = { source:  'target/top_level.rb',
                                        dest:    "target/#{name.underscore}.rb",
@@ -220,6 +222,7 @@ module OrigenAppGenerators
           list[:environment_default] = { source: 'j750.rb',          # Relative to the file being linked to
                                          dest:   'environment/default.rb', # Relative to destination_root
                                          type:   :symlink }
+          list[:pattern_example] = { source: 'pattern/example.rb' }
           # Remember to return the final list
           list
         end

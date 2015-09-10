@@ -57,7 +57,12 @@ module OrigenAppGenerators
         gemfile:            { source: 'Gemfile' },
         gitignore:          { source: '.gitignore' },
         irbrc:              { source: '.irbrc' },
-        rspec:              { source: '.rspec' }
+        rspec:              { source: '.rspec' },
+        # This sets the default mode of the new workspace to 'default'
+        session:            { source: 'origen_core_session',
+                              dest:   '.session/origen_core',
+                              copy:   true
+                            }
       }
     end
   end

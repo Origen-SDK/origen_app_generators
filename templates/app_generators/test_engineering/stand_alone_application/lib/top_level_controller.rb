@@ -1,5 +1,5 @@
 module <%= @namespace %>
-  class TopLevelController
+  class <%= @options[:name] || "TopLevel" %>Controller
     include Origen::Controller
 
     def startup(options)
