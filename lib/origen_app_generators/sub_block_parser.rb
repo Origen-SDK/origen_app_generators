@@ -1,7 +1,17 @@
 module OrigenAppGenerators
   require 'strscan'
+  # Responsible for parsing something like this:
+  #
+  #   "ram, osc, pll, atd(2), comms[ram(2), osc](3)"
+  #
+  # into this:
+  #
+  #   {
+  #     "RAM"=>{}, "Osc"=>{}, "PLL"=>{}, "ATD"=> {:instances=>2},
+  #     "Comms"=>{:instances=>3, :children=>{"RAM"=>{:instances=>2}, "Osc"=>{}}}
+  #   }
+  #
   class SubBlockParser
-
     def parse(str)
       r = {}
       split(str).each do |tag|
@@ -22,9 +32,7 @@ module OrigenAppGenerators
     def split(str)
       r = []
       str = StringScanner.new(str)
-      until str.eos?
-        r << next_tag(str)
-      end
+      r << next_tag(str) until str.eos?
       r
     end
 
@@ -34,7 +42,7 @@ module OrigenAppGenerators
         v.chop.strip
       elsif v[-1] == '['
         open = 1
-        while open > 0 do
+        while open > 0
           v += str.scan_until(/\[|\]/)
           if v[-1] == '['
             open += 1
@@ -43,7 +51,7 @@ module OrigenAppGenerators
           end
         end
         v += next_tag(str)
-      # End of line  
+      # End of line
       else
         v.strip
       end
@@ -52,7 +60,7 @@ module OrigenAppGenerators
     def extract_children(tag)
       # http://rubular.com/r/plGILY2e2U
       if tag.strip =~ /([^\[]*)\[(.*)\]/
-        [$1, parse($2)]
+        [Regexp.last_match(1), parse(Regexp.last_match(2))]
       else
         [tag.strip, nil]
       end
@@ -60,7 +68,7 @@ module OrigenAppGenerators
 
     def extract_instances(tag)
       if tag.strip =~ /(.*)\((\d+)\)$/
-        [$1, $2.to_i]
+        [Regexp.last_match(1), Regexp.last_match(2).to_i]
       else
         [tag.strip, nil]
       end

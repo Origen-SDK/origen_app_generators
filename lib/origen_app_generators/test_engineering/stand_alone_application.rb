@@ -74,7 +74,7 @@ module OrigenAppGenerators
         puts 'You can specify layers of hierarchy and multiple instantiations, here are some examples:'
         puts
         puts '  A RAM, OSC, PLL and 2 ATDs at the top-level:    ram, osc, pll, atd(2)'
-        puts '  With 3 com blocks with embedded components:     ram, osc, pll, atd(2), com[ram(2), osc](3)'
+        puts '  With 3 COMMS blocks with embedded components:   ram, osc, pll, atd(2), comms[ram(2), osc](3)'
         if @top_level_names.size > 1
           puts
           puts 'If you want different modules for each of your top-level devices you can do:'
@@ -101,10 +101,13 @@ module OrigenAppGenerators
         @sub_blocks_lookup
       end
 
+      # Returns a hash that looks like:
+      #
+      #   {"Falcon"=>{"RAM"=>{}, "ATD"=>{:instances=>2}}, "Eagle"=>{"RAM"=>{:instances=>2}, "ATD"=>{:instances=>4}}}
       def top_level_sub_blocks
         blocks = {}
         # Make sure that each top-level object has a sub blocks assignment
-        if @top_level_names.any?{ |n| @sub_blocks_lookup[n] }
+        if @top_level_names.any? { |n| @sub_blocks_lookup[n] }
           @top_level_names.each do |name|
             if @sub_blocks_lookup[name]
               blocks[name] = @sub_blocks_lookup[name][:children] || {}
@@ -121,12 +124,30 @@ module OrigenAppGenerators
         blocks
       end
 
+      # Returns a hash with all sub-blocks at the top-level, e.g.:
+      #
+      #   {"RAM"=>{}, "ATD"=>{}, "Comms"=>{"RAM"=>{:instances=>2}, "Osc"=>{}}, "Osc"=>{}}
       def sub_blocks
         blocks = {}
         top_level_sub_blocks.each do |top, attrs|
-          attrs.each do |name, attrs|
-
+          extract_sub_blocks(attrs) do |name, attrs|
+            if blocks[name]
+              if blocks[name] != (attrs[:children] || {})
+                Origen.log.warning "The app builder does not currently support different sub-block definitions for block #{name}"
+                Origen.log.warning 'Only the first defintion has been built'
+              end
+            else
+              blocks[name] = attrs[:children] || {}
+            end
           end
+        end
+        blocks
+      end
+
+      def extract_sub_blocks(blocks, &block)
+        blocks.each do |name, attrs|
+          yield name, attrs
+          extract_sub_blocks(attrs[:children], &block) if attrs[:children]
         end
       end
 
@@ -157,25 +178,39 @@ module OrigenAppGenerators
           # Example of how to add a file, in this case the file will be compiled and copied to
           # the same location in the new app
           @top_level_names.each_with_index do |name, i|
-            list["top_level_model_#{i}"] = { source: 'lib/top_level.rb',
-                                             dest:   "lib/#{@name}/models/#{name.underscore}.rb",
-                                             options: {name: name, sub_blocks: top_level_sub_blocks[name]}
+            list["top_level_model_#{i}"] = { source:  'lib/top_level.rb',
+                                             dest:    "lib/#{@name}/#{name.underscore}.rb",
+                                             options: { name: name, sub_blocks: top_level_sub_blocks[name] }
                                            }
-            list["target_#{name}"] = { source: 'target/top_level.rb',
-                                       dest:   "target/#{name.underscore}.rb",
-                                       options: {name: name}
+
+            list["top_level_controller_#{i}"] = { source: 'lib/top_level_controller.rb',
+                                                  dest:   "lib/#{@name}/#{name.underscore}_controller.rb" }
+
+            list["target_#{name}"] = { source:  'target/top_level.rb',
+                                       dest:    "target/#{name.underscore}.rb",
+                                       options: { name: name }
                                      }
             if i == 0
               list[:target_default] =  { source: "#{name.underscore}.rb", # Relative to the file being linked to
-                                           dest: 'target/default.rb',     # Relative to destination_root
-                                           type: :symlink }
+                                         dest:   'target/default.rb',     # Relative to destination_root
+                                         type:   :symlink }
             end
           end
-          list[:top_level_controller] = { source: 'lib/top_level_controller.rb',
-                                          dest:   "lib/#{@name}/controllers/top_level_controller.rb" }
+
+          sub_blocks.each do |name, blocks|
+            list["ip_block_#{name}"] = { source:  'lib/ip_block.rb',
+                                         dest:    "lib/#{@name}/#{name.underscore}.rb",
+                                         options: { name: name, sub_blocks: blocks }
+                                       }
+
+            list["ip_block_controller_#{name}"] = { source: 'lib/ip_block_controller.rb',
+                                                    dest:   "lib/#{@name}/#{name.underscore}_controller.rb" }
+          end
+
           list[:environment_j750] = { source: 'environment/j750.rb' }
           list[:environment_uflex] = { source: 'environment/uflex.rb' }
           list[:environment_v93k] = { source: 'environment/v93k.rb' }
+          list[:environment_jlink] = { source: 'environment/jlink.rb' }
           # Alternatively specifying a different destination, typically you would do this when
           # the final location is dynamic
           # list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }
