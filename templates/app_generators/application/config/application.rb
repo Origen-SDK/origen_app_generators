@@ -64,12 +64,12 @@ class <%= @namespace %>Application < Origen::Application
   #end
  
   # This will automatically deploy your documentation after every tag
-  def after_release_email(tag, note, type, selector, options)
-    command = "origen web compile --remote --api"
-    Dir.chdir Origen.root do
-      system command
-    end
-  end
+  #def after_release_email(tag, note, type, selector, options)
+  #  command = "origen web compile --remote --api"
+  #  Dir.chdir Origen.root do
+  #    system command
+  #  end
+  #end
 
   # Ensure that all tests pass before allowing a release to continue
   #def validate_release
