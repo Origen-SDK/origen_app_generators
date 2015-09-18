@@ -30,15 +30,15 @@ module OrigenAppGenerators
         config_boot:        { source: 'config/boot.rb' },
         config_commands:    { source: 'config/commands.rb' },
         doc_history:        { source: 'doc/history' },
-        target_debug:       { source: 'target/debug.rb' },
-        target_production:  { source: 'target/production.rb' },
-        target_default:     { source: 'debug.rb',          # Relative to the file being linked to
-                              dest:   'target/default.rb', # Relative to destination_root
-                              type:   :symlink },
+        target_default:     { source: 'target/default.rb' },
+        #target_default:     { source: 'debug.rb',          # Relative to the file being linked to
+        #                      dest:   'target/default.rb', # Relative to destination_root
+        #                      type:   :symlink },
+        environment_dir:    { dest: "environment", type: :directory },
         lib_module:         { source: 'lib/module.rb',
                               dest:   "lib/#{@name}.rb" },
-        lib_top_level:      { source: 'lib/top_level.rb',
-                              dest:   "lib/#{@name}/top_level.rb" },
+        #lib_top_level:      { source: 'lib/top_level.rb',
+        #                      dest:   "lib/#{@name}/top_level.rb" },
         lib_tasks:          { source: 'lib/app.rake',
                               dest:   "lib/tasks/#{@name}.rake" },
         spec_helper:        { source: 'spec/spec_helper.rb' },
@@ -58,7 +58,7 @@ module OrigenAppGenerators
         gitignore:          { source: '.gitignore' },
         irbrc:              { source: '.irbrc' },
         rspec:              { source: '.rspec' },
-        # This sets the default mode of the new workspace to 'default'
+        # This sets the default mode of the new workspace to 'debug'
         session:            { source: 'origen_core_session',
                               dest:   '.session/origen_core',
                               copy:   true

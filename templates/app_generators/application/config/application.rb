@@ -1,7 +1,7 @@
 require 'origen'
 class <%= @namespace %>Application < Origen::Application
 
-  # See http://origen-sdk.org/origen/latest/api/Origen/Application/Configuration.html
+  # See http://origen-sdk.org/origen/api/Origen/Application/Configuration.html
   # for a full list of the configuration options available
 
   # These attributes should never be changed, the duplication here will be resolved in future
@@ -10,15 +10,25 @@ class <%= @namespace %>Application < Origen::Application
   self.namespace  = "<%= @namespace %>"
   config.name     = "<%= @name %>"
   config.initials = "<%= @namespace %>"
-  config.rc_url   = "" 
+  # Change this to point to the revision control repository for this <%= @type %>
+<% if @audience == :external -%>
+  #config.rc_url   = "ssh://git@github.com:myaccount/<%= @name %>.git" 
+<% else -%>
+  #config.rc_url   = "ssh://git@sw-stash.mycompany.net/myproject/<%= @name %>.git"
+<% end -%>
 <% if @audience == :external -%>
   config.release_externally = true
 <% end -%>
 
   # To enable deployment of your documentation to a web server (via the 'origen web'
   # command) fill in these attributes.
-  config.web_directory = "/proj/.web_origen/html/<%= @name %>"
-  config.web_domain = "http://origen-sdk.org/<%= @name %>"
+<% if @audience == :external -%>
+  #config.web_directory = "git@github.com:Origen-SDK/Origen-SDK.github.io.git/<%= @name %>"
+  #config.web_domain = "http://origen-sdk.org/<%= @name %>"
+<% else -%>
+  #config.web_directory = "/path/to/server/<%= @name %>"
+  #config.web_domain = "http://origen.mycompany.net/<%= @name %>"
+<% end -%>
 
   # When false Origen will be less strict about checking for some common coding errors,
   # it is recommended that you leave this to true for better feedback and easier debug.

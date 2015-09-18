@@ -1,6 +1,6 @@
 module OrigenAppGenerators
-  # Generates a generic plugin shell
-  class GenericPlugin < Plugin
+  # Generates a generic application shell
+  class EmptyApplication < Application
     # Any methods that are not protected will get invoked in the order they are
     # defined when the generator is run
 

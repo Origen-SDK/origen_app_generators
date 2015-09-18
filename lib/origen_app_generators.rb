@@ -3,8 +3,8 @@ require 'colored'
 require 'origen_app_generators/base'
 require 'origen_app_generators/application'
 require 'origen_app_generators/plugin'
-require 'origen_app_generators/generic_application'
-require 'origen_app_generators/generic_plugin'
+require 'origen_app_generators/empty_application'
+require 'origen_app_generators/empty_plugin'
 require 'origen_app_generators/new'
 require 'origen_app_generators/test_engineering/test_block'
 require 'origen_app_generators/test_engineering/stand_alone_application'
@@ -13,9 +13,9 @@ module OrigenAppGenerators
   extend Origen::Utility::InputCapture
 
   TEST_INPUTS = [
-    # Generic app
-    ['0', '0', :default, :default, []],
-    # Generic plugin
+    # Empty app
+    ['0', '0', :default, :default, ['origen lint']],
+    # Empty plugin
     ['0', '1', :default, :default, 'A test block', 'yes', []],
     # Stand alone test engineering app
     ['1', '0', :default, :default, 'Falcon, Eagle', 'Falcon[ram, atd(2), comm[ram(2), osc](3)], Eagle[ram(2), atd(4)]', ['origen g example']]
@@ -38,7 +38,7 @@ module OrigenAppGenerators
     puts
     i = 0
     accept = [0]
-    puts '0 - Generic / Not listed'
+    puts '0 - Empty / Not listed'
     AVAILABLE.reverse_each do |domain, _generators|
       i += 1
       accept << i
@@ -58,9 +58,9 @@ module OrigenAppGenerators
 
       case selection
       when 0
-        OrigenAppGenerators::GenericApplication.start [path]
+        OrigenAppGenerators::EmptyApplication.start [path]
       when 1
-        OrigenAppGenerators::GenericPlugin.start [path]
+        OrigenAppGenerators::EmptyPlugin.start [path]
       end
     else
       domain = AVAILABLE.to_a
