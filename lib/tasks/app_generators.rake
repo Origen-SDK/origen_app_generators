@@ -31,7 +31,8 @@ end
 desc 'Test that all generators build'
 task :regression do
   OrigenAppGenerators::TEST_INPUTS.each do |inputs|
-    commands = ['origen -v'] + inputs.pop
+    # Test that origen and the console can boot in the new app
+    commands = ['origen -v', 'origen lint', 'rake new_app_tests:load_target'] + inputs.pop
     if ENV['TRAVIS'] && ENV['CONTINUOUS_INTEGRATION']
       prefix = 'bundle && bundle exec '
     end
@@ -41,6 +42,9 @@ task :regression do
       Origen.app.stats.report_fail
       exit 1
     end
+    # Copy the new app test rake tasks to the new app
+    t = File.expand_path("../new_app_tests.rake", Pathname.new(__FILE__).realpath)
+    FileUtils.cp t, 'tmp/lib/tasks'
     # Test the app can boot
     Bundler.with_clean_env do
       Dir.chdir 'tmp' do

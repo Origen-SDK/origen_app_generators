@@ -8,9 +8,13 @@ Gem::Specification.new do |spec|
   spec.authors       = ["<%= User.current.name %>"]
   spec.email         = ["<%= User.current.email %>"]
   spec.summary       = "<%= @summary %>"
-  spec.homepage      = "http://origen.freescale.net/<%= @name %>"
+<% if @audience == :external -%>
+  #spec.homepage      = "http://origen-sdk.org/<%= @name %>"
+<% else -%>
+  #spec.homepage      = "http://origen.mycompany.net/<%= @name %>"
+<% end -%>
 
-  spec.required_ruby_version     = '>= 1.9.3'
+  spec.required_ruby_version     = '>= 2'
   spec.required_rubygems_version = '>= 1.8.11'
 
   # Only the files that are hit by these wildcards will be included in the
@@ -32,5 +36,5 @@ Gem::Specification.new do |spec|
 <% end -%>
 
   # Add any gems that your plugin needs for its development environment only
-  #spec.add_development_dependency "doc_helpers", ">= 1.7.0"
+  spec.add_development_dependency "origen_doc_helpers"
 end

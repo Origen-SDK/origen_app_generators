@@ -14,7 +14,7 @@ module OrigenAppGenerators
 
   TEST_INPUTS = [
     # Empty app
-    ['0', '0', :default, :default, ['origen lint']],
+    ['0', '0', :default, :default, []],
     # Empty plugin
     ['0', '1', :default, :default, 'A test block', 'yes', []],
     # Stand alone test engineering app

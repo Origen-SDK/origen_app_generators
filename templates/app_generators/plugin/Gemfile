@@ -6,15 +6,10 @@ source '<%= Origen.site_config.gem_server %>'
 # Specify your gem's dependencies in <%= @name %>.gemspec
 gemspec
 
+# Only these gems should be added here
 <% if @audience == :external -%>
 # This gem provides integration with https://coveralls.io/ to monitor
 # your application's test coverage
 gem 'coveralls', require: false
 <% end -%>
-
-# Only these gems should be added here
-if RUBY_VERSION >= '2.0.0'
-  gem 'byebug', '~>3.5'
-else
-  gem 'debugger', '~>1.6'
-end
+gem 'byebug', '~>3.5'

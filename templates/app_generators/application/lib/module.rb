@@ -1,6 +1,6 @@
 require 'origen'
 <% if @type == :plugin -%>
-require_relative '../config/application.rb'     
+require_relative '../config/application.rb'
 <% end -%>
 module <%= @namespace %>
   # Load all files in the lib directory via a wildcard, if your project becomes

@@ -1,5 +1,5 @@
 module <%= @namespace %>
-  class <%= @options[:name] || "TopLevel" %>
+  class <%= @options[:name] || 'TopLevel' %>
     include Origen::TopLevel
 
     def initialize(options = {})
@@ -23,9 +23,9 @@ module <%= @namespace %>
     def instantiate_sub_blocks(options = {})
 <% @options[:sub_blocks].each do |name, attrs| -%>
 <%   if attrs[:instances] -%>
-      sub_blocks :<%= name.underscore %>, instances: <%= attrs[:instances] %>, class_name: '<%= name.camelize %>'
+      sub_block :<%= name.underscore %>, instances: <%= attrs[:instances] %>, class_name: '<%= name.camelize %>'
 <%   else -%>
-      sub_block  :<%= name.underscore %>, class_name: '<%= name.camelize %>'
+      sub_block :<%= name.underscore %>, class_name: '<%= name.camelize %>'
 <%   end -%>
 <% end -%>
     end
