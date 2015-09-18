@@ -31,13 +31,13 @@ module OrigenAppGenerators
         config_commands:    { source: 'config/commands.rb' },
         doc_history:        { source: 'doc/history' },
         target_default:     { source: 'target/default.rb' },
-        #target_default:     { source: 'debug.rb',          # Relative to the file being linked to
+        # target_default:     { source: 'debug.rb',          # Relative to the file being linked to
         #                      dest:   'target/default.rb', # Relative to destination_root
         #                      type:   :symlink },
-        environment_dir:    { dest: "environment", type: :directory },
+        environment_dir:    { dest: 'environment', type: :directory },
         lib_module:         { source: 'lib/module.rb',
                               dest:   "lib/#{@name}.rb" },
-        #lib_top_level:      { source: 'lib/top_level.rb',
+        # lib_top_level:      { source: 'lib/top_level.rb',
         #                      dest:   "lib/#{@name}/top_level.rb" },
         lib_tasks:          { source: 'lib/app.rake',
                               dest:   "lib/tasks/#{@name}.rake" },

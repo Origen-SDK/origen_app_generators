@@ -43,16 +43,18 @@ task :regression do
       exit 1
     end
     # Copy the new app test rake tasks to the new app
-    t = File.expand_path("../new_app_tests.rake", Pathname.new(__FILE__).realpath)
+    t = File.expand_path('../new_app_tests.rake', Pathname.new(__FILE__).realpath)
     FileUtils.cp t, 'tmp/lib/tasks'
     # Test the app can boot
     Bundler.with_clean_env do
       Dir.chdir 'tmp' do
         commands.each do |command|
+          Origen.log.info "Running command: #{command}"
           unless system("#{prefix}#{command}")
             Origen.app.stats.report_fail
             exit 1
           end
+          Origen.log.success "Command passed: #{command}"
         end
       end
     end
