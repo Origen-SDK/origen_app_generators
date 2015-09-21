@@ -1,1 +1,1 @@
-$tester = OrigenTesters::V93K.new
+OrigenTesters::V93K.new

@@ -1,1 +1,1 @@
-$tester = OrigenTesters::UltraFLEX.new
+OrigenTesters::UltraFLEX.new

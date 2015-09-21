@@ -1,1 +1,1 @@
-$tester = OrigenTesters::J750.new
+OrigenTesters::J750.new

@@ -1,1 +1,1 @@
-$tester = OrigenDebuggers::JLink.new
+OrigenDebuggers::JLink.new

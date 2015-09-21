@@ -25,7 +25,7 @@ module OrigenAppGenerators
   # generally speaking don't, use 'rake new' to create a new generator instead
   AVAILABLE = {
     'Test Engineering' => [
-      OrigenAppGenerators::TestEngineering::TestBlock,
+      # OrigenAppGenerators::TestEngineering::TestBlock,
       OrigenAppGenerators::TestEngineering::StandAloneApplication
     ]
   }
