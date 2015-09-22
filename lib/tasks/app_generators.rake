@@ -35,7 +35,7 @@ task :regression do
     commands = ['origen -v',
                 'origen lint',
                 'rake new_app_tests:load_target',
-                'origen web compile --no-serve',
+                'origen web compile --no-serve'
                ] + inputs.pop
     if ENV['TRAVIS'] && ENV['CONTINUOUS_INTEGRATION']
       prefix = 'bundle && bundle exec '
