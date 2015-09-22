@@ -222,6 +222,10 @@ module OrigenAppGenerators
           list[:environment_default] = { source: 'j750.rb',          # Relative to the file being linked to
                                          dest:   'environment/default.rb', # Relative to destination_root
                                          type:   :symlink }
+          # Test engineering source directories
+          list[:program_dir] = { dest: 'program', type: :directory }
+          list[:pattern_dir] = { dest: 'pattern', type: :directory }
+          # Example source files
           list[:pattern_example] = { source: 'pattern/example.rb' }
           # Remember to return the final list
           list

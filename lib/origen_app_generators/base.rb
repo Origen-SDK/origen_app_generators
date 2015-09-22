@@ -27,7 +27,6 @@ module OrigenAppGenerators
 
     def get_common_user_input
       get_name_and_namespace
-      # get_revision_control
     end
 
     def get_lastest_origen_version
@@ -51,41 +50,6 @@ module OrigenAppGenerators
 
     def self.title
       desc.sub(/^An? /, '').titleize
-    end
-
-    def get_revision_control
-      puts ''
-      puts 'IS THIS FOR TRAINING?'
-      puts ''
-      training = get_text(confirm: :return_boolean, default: 'no')
-      if type == :plugin && !training
-        puts ''
-        puts 'WHAT CATEGORY BEST DESCRIBES YOUR PLUGIN??'
-        puts ''
-        cats = {
-          dut:      'Top-level SoC/DUT models',
-          helper:   'Helper methods and code snippets',
-          physical: 'Physical interface drivers (e.g. JTAG)',
-          protocol: 'Protocol driver providing read/write register APIs (e.g. JTAG2IPS)',
-          module:   'A module to support testing a specific silicon block',
-          tester:   'Any Origen tester model, could be an ATE or a debugger or testbench stimulus generator ',
-          misc:     'Anything else'
-        }
-        cats.each do |key, val|
-          puts "#{key} - #{val}"
-        end
-        puts ''
-        category = get_text(single: true, accept: cats.keys).downcase.to_sym
-      end
-      @vault = 'sync://sync-15088:15088/Projects/common_tester_blocks/'
-      if training
-        @vault += 'origen_training/'
-      elsif type == :plugin
-        @vault += "origen_blocks/#{category}/"
-      else
-        @vault += 'blocks/'
-      end
-      @vault += "#{@name}/tool_data/origen"
     end
 
     # Calling this will compile all files in filelist against the current instance

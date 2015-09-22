@@ -29,6 +29,7 @@
 /.collection
 /.bin
 /.session
+/tmp
 
 # Cruft from other revision control systems
 .SYNC

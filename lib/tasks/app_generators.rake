@@ -31,8 +31,12 @@ end
 desc 'Test that all generators build'
 task :regression do
   OrigenAppGenerators::TEST_INPUTS.each do |inputs|
-    # Test that origen and the console can boot in the new app
-    commands = ['origen -v', 'origen lint', 'rake new_app_tests:load_target'] + inputs.pop
+    # Default test that are run for all app builds
+    commands = ['origen -v',
+                'origen lint',
+                'rake new_app_tests:load_target',
+                'origen web compile --no-serve',
+               ] + inputs.pop
     if ENV['TRAVIS'] && ENV['CONTINUOUS_INTEGRATION']
       prefix = 'bundle && bundle exec '
     end

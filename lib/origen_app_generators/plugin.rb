@@ -5,7 +5,6 @@ module OrigenAppGenerators
       get_name_and_namespace
       get_summary
       get_audience
-      # get_revision_control
     end
 
     protected
@@ -23,6 +22,9 @@ module OrigenAppGenerators
         list[:templates_shared] = { dest: 'templates/shared', type: :directory }
         if @audience == :external
           list[:travis] = { source: '.travis.yml' }
+          list[:web_navbar] = { source: 'templates/web/partials/_navbar_external.html.erb', dest: 'templates/web/partials/_navbar.html.erb' }
+        else
+          list[:web_navbar] = { source: 'templates/web/partials/_navbar_internal.html.erb', dest: 'templates/web/partials/_navbar.html.erb' }
         end
         list
       end
