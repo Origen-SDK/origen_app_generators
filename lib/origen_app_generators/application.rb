@@ -29,6 +29,8 @@ module OrigenAppGenerators
         config_version:     { source: 'config/version.rb' },
         config_boot:        { source: 'config/boot.rb' },
         config_commands:    { source: 'config/commands.rb' },
+        config_dev:         { source: 'config/maillist_dev.txt' },
+        config_prod:        { source: 'config/maillist_prod.txt' },
         doc_history:        { source: 'doc/history' },
         target_default:     { source: 'target/default.rb' },
         # target_default:     { source: 'debug.rb',          # Relative to the file being linked to
