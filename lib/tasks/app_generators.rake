@@ -70,7 +70,6 @@ def _execute_generator(klass)
   # With the generator identified this now launches it in a standalone shell
   # This is to emulate how it will run in real life and cause it to fail if there are
   # any dependencies on running within an Origen app environment
-
   boot = "#{File.expand_path(File.dirname(__FILE__))}/boot.rb"
   origen_lib = "#{Origen.top}/lib"
   origen_lib = '/proj/mem_c40tfs_testeng/r49409/origen/lib'

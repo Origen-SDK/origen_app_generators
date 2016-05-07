@@ -25,11 +25,7 @@ begin
   Dir.chdir tmp_dir do
     # For some reason this is not being defined by required origen anymore
     User = Origen::Users::User unless defined? User
-    if RUBY_VERSION >= '2.0.0'
-      gem 'byebug', '~>3.5'
-    else
-      gem 'debugger', '~>1.6'
-    end
+    gem 'byebug'
     require 'origen_app_generators'
     if ARGV[1] == 'invoke'
       OrigenAppGenerators.invoke('tmp')
