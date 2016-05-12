@@ -2,11 +2,24 @@ module OrigenAppGenerators
   module TestEngineering
     # Generates a generic plugin shell
     class TestBlock < Plugin
-      desc 'A test block intended to plugin into a top-level application'
+      desc 'An IP test module intended to plugin into a top-level (SoC) application'
+
+      def initialize(*args)
+        @audience = :internal
+        super
+      end
+
+      def get_user_input
+        # The methods to get the common user input that applies to all applications will
+        # get called at the start automatically, you have a chance here to ask any additional
+        # questions that are specific to the type of application being generated
+        get_ip_names
+        get_sub_block_name
+      end
 
       def generate_files
         @runtime_dependencies = [
-          ['origen_testers', '>= 0.3.0.pre35']
+          ['origen_testers', '>= 0.6.1']
         ]
         build_filelist
       end
@@ -16,10 +29,61 @@ module OrigenAppGenerators
       end
 
       def conclude
-        puts "New test block created at: #{destination_root}"
+        puts "New test module created at: #{destination_root}"
       end
 
       protected
+
+      def get_ip_names
+        puts
+        puts 'NAME THE IP BLOCKS THAT THIS MODULE WILL SUPPORT'
+        puts
+        puts "You don't need to name them all up front, but you must declare at least one."
+        puts 'We recommend that you use the official name(s) for the IP(s) as used by your design team.'
+        puts 'Separate multiple names with a comma:    FLASH_C40_512K, FLASH_C40_2M'
+        puts
+
+        valid = false
+        until valid
+          @ip_names = get_text(single: true).strip.split(',').map do |name|
+            n = name.strip.symbolize.to_s.upcase
+            unless n.empty?
+              n
+            end
+          end.compact
+          unless @ip_names.empty?
+            # Should we check anything here?
+            valid = true
+          end
+        end
+        @ip_names
+      end
+
+      def get_sub_block_name
+        puts
+        puts "WHAT SHOULD BE THE PATH TO #{@ip_names.first} WHEN IT IS INSTANTIATED IN AN SOC?"
+        puts
+        puts 'Your IPs will be instantiated by a top-level (SoC) model, at which point it should be given a generic nickname'
+        puts 'that will provide an easy way to access it.'
+        puts 'For example, if you had an IP model for an NVM block, the IP name might be "FLASH_C40_512K_128K", but when it is'
+        puts 'instantiated it would be given the name "flash", allowing it be easily accessed as "dut.flash".'
+        puts
+
+        valid = false
+        until valid
+          @sub_block_name = get_text(single: true).strip.split(',').map do |name|
+            n = name.strip.symbolize.to_s.downcase
+            unless n.empty?
+              n
+            end
+          end.compact
+          unless @sub_block_name.empty?
+            # Should we check anything here?
+            valid = true
+          end
+        end
+        @sub_block_name = @sub_block_name.first
+      end
 
       # Defines the filelist for the generator, the default list is inherited from the
       # parent class (Plugin).
@@ -45,9 +109,10 @@ module OrigenAppGenerators
           list.delete(:target_production)
           # Example of how to add a file, in this case the file will be compiled and copied to
           # the same location in the new app
-          list[:target_v93k] = { source: 'target/v93k.rb' }
-          list[:target_j750] = { source: 'target/j750.rb' }
-          list[:target_ultraflex] = { source: 'target/ultraflex.rb' }
+          list[:target_default] = { source: 'target/default.rb' }
+          list[:environment_v93k] = { source: 'environment/v93k.rb' }
+          list[:environment_j750] = { source: 'environment/j750.rb' }
+          list[:environment_ultraflex] = { source: 'environment/ultraflex.rb' }
           list[:program_prb1] = { source: 'program/prb1.rb' }
           list[:lib_interface] = { source: 'lib/interface.rb', dest: "lib/#{@name}/interface.rb" }
           # Alternatively specifying a different destination, typically you would do this when
@@ -56,9 +121,26 @@ module OrigenAppGenerators
           # Example of how to create a directory
           list[:pattern_dir] = { dest: 'pattern', type: :directory }
           # Example of how to create a symlink
-          list[:target_default] = { source: 'j750.rb',          # Relative to the file being linked to
-                                    dest:   'target/default.rb', # Relative to destination_root
-                                    type:   :symlink }
+          #list[:target_default] = { source: 'j750.rb',          # Relative to the file being linked to
+          #                          dest:   'target/default.rb', # Relative to destination_root
+          #                          type:   :symlink }
+          list[:test_dut] = { source:  'lib/test/dut.rb',
+                              dest:    "lib/#{@name}/test/dut.rb",
+                              options: { class_name: @ip_names.first, sub_block_name: @sub_block_name }
+                            }
+          
+          @ip_names.each_with_index do |name, i|
+            list["ip_#{i}"] = { source:  'lib/model.rb',
+                                dest:    "lib/#{@name}/#{name.underscore}.rb",
+                                options: { name: name }
+                              }
+
+            list["ip_controller_#{i}"] = { source:  'lib/controller.rb',
+                                           dest:    "lib/#{@name}/#{name.underscore}_controller.rb",
+                                           options: { name: name }
+                                         }
+
+          end
           # Remember to return the final list
           list
         end

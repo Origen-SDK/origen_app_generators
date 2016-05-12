@@ -1,6 +1,5 @@
 module <%= @namespace %>
   class Interface
-    include Testers::ProgramGenerators
-    include Testers::BasicTestSetups
+    include OrigenTesters::ProgramGenerators
   end
 end

@@ -4,7 +4,7 @@ module OrigenAppGenerators
     def get_common_user_input
       get_name_and_namespace
       get_summary
-      get_audience
+      get_audience unless @audience
     end
 
     protected
@@ -43,7 +43,7 @@ module OrigenAppGenerators
       puts
       puts 'IS THIS PLUGIN GOING TO BE RELEASED TO AN EXTERNAL AUDIENCE?'
       puts
-      puts 'By answering yes...'
+      puts 'By answering yes, this plugin will be pushed to rubygems.org when it is released and it will be available outside of your company.'
       puts
       confirm_external = get_text(confirm: :return_boolean, default: 'no')
       @audience = :external if confirm_external
