@@ -24,12 +24,18 @@ module OrigenAppGenerators
         build_filelist
       end
 
-      def add_requires
+      def final_modifications
         prepend_to_file "lib/#{@name}.rb", "require 'origen_testers'\n"
+        # Add require line
+        doc_helpers = /gem 'origen_doc_helpers'/
+        inject_into_file 'Gemfile', "\ngem 'origen_jtag'\ngem 'origen_arm_debug'\n",
+                         after: doc_helpers
       end
 
       def conclude
         puts "New test module created at: #{destination_root}"
+        puts
+        puts 'Generate an example pattern by running "origen g example"'
       end
 
       protected
@@ -121,14 +127,17 @@ module OrigenAppGenerators
           # Example of how to create a directory
           list[:pattern_dir] = { dest: 'pattern', type: :directory }
           # Example of how to create a symlink
-          #list[:target_default] = { source: 'j750.rb',          # Relative to the file being linked to
-          #                          dest:   'target/default.rb', # Relative to destination_root
-          #                          type:   :symlink }
+          list[:environment_default] = { source: 'ultraflex.rb',           # Relative to the file being linked to
+                                         dest:   'environment/default.rb', # Relative to destination_root
+                                         type:   :symlink }
           list[:test_dut] = { source:  'lib/test/dut.rb',
                               dest:    "lib/#{@name}/test/dut.rb",
                               options: { class_name: @ip_names.first, sub_block_name: @sub_block_name }
                             }
-          
+          list[:test_dutc] = { source: 'lib/test/dut_controller.rb',
+                               dest:   "lib/#{@name}/test/dut_controller.rb"
+                            }
+
           @ip_names.each_with_index do |name, i|
             list["ip_#{i}"] = { source:  'lib/model.rb',
                                 dest:    "lib/#{@name}/#{name.underscore}.rb",
@@ -139,8 +148,11 @@ module OrigenAppGenerators
                                            dest:    "lib/#{@name}/#{name.underscore}_controller.rb",
                                            options: { name: name }
                                          }
-
           end
+
+          list[:pattern_example] = { source:  'pattern/example.rb',
+                                     options: { sub_block_name: @sub_block_name }
+                                   }
           # Remember to return the final list
           list
         end

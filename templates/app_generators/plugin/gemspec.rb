@@ -34,7 +34,4 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency <%= dep.map{ |d| "\"#{d}\"" }.join(', ') %>
   <% end -%>
 <% end -%>
-
-  # Add any gems that your plugin needs for its development environment only
-  spec.add_development_dependency "origen_doc_helpers"
 end

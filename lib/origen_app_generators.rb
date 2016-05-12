@@ -20,7 +20,7 @@ module OrigenAppGenerators
     # Stand alone test engineering app
     ['1', '0', :default, :default, 'Falcon, Eagle', 'Falcon[ram, atd(2), comm[ram(2), osc](3)], Eagle[ram(2), atd(4)]', ['origen g example']],
     # Test module
-    ['1', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', []]
+    ['1', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', ['origen g example']]
   ]
 
   # If adding any new generators manually always add them at the top, but
