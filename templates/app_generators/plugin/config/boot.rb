@@ -5,13 +5,20 @@
 # case only lib/<%= @name %>.rb is loaded.
 #
 # Therefore this file can be used to load anything extra that you need to boot
-# the development environment for this app. For example this is typically used
+# the development environment for this app. For example, this is typically used
 # to load some additional test classes to use your plugin APIs so that they can
 # be tested and/or interacted with in the console.
 require "<%= @name %>"
 
-# Load a Top-level/DUT class that is defined within this plugin's lib directory
-# and is required by some of our tests.
-# Normally such a class should not be exposed to 3rd party users of the plugin,
-# so we required it here rather than in lib/<%= @name %>.rb.
-#require "<%= @name %>/test/top_level"
+module <%= @namespace %>Dev
+  # Example of how to explicitly require a file
+  #require "<%= @name %>_dev/my_file"
+    
+  # Load all files in the lib/<%= @name %>_dev directory.
+  # Note that there is no problem from requiring a file twice (Ruby will ignore
+  # the second require), so if you have a file that must be required first, then
+  # explicitly require it up above and then let this take care of the rest.
+  Dir.glob("#{File.dirname(__FILE__)}/../lib/<%= @name %>_dev/**/*.rb").sort.each do |file|
+    require file
+  end
+end

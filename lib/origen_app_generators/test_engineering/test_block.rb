@@ -69,7 +69,7 @@ module OrigenAppGenerators
         puts
         puts "WHAT SHOULD BE THE PATH TO #{@ip_names.first} WHEN IT IS INSTANTIATED IN AN SOC?"
         puts
-        puts 'Your IPs will be instantiated by a top-level (SoC) model, at which point it should be given a generic nickname'
+        puts 'Your IP(s) will be instantiated by a top-level (SoC) model, at which point it should be given a generic nickname'
         puts 'that will provide an easy way to access it.'
         puts 'For example, if you had an IP model for an NVM block, the IP name might be "FLASH_C40_512K_128K", but when it is'
         puts 'instantiated it would be given the name "flash", allowing it be easily accessed as "dut.flash".'
@@ -130,12 +130,12 @@ module OrigenAppGenerators
           list[:environment_default] = { source: 'ultraflex.rb',           # Relative to the file being linked to
                                          dest:   'environment/default.rb', # Relative to destination_root
                                          type:   :symlink }
-          list[:test_dut] = { source:  'lib/test/dut.rb',
-                              dest:    "lib/#{@name}/test/dut.rb",
-                              options: { class_name: @ip_names.first, sub_block_name: @sub_block_name }
-                            }
-          list[:test_dutc] = { source: 'lib/test/dut_controller.rb',
-                               dest:   "lib/#{@name}/test/dut_controller.rb"
+          list[:dev_dut] = { source:  'lib_dev/dut.rb',
+                             dest:    "lib/#{@name}_dev/dut.rb",
+                             options: { class_name: @ip_names.first, sub_block_name: @sub_block_name }
+                           }
+          list[:dev_dutc] = { source: 'lib_dev/dut_controller.rb',
+                              dest:   "lib/#{@name}_dev/dut_controller.rb"
                             }
 
           @ip_names.each_with_index do |name, i|
