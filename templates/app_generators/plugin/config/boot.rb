@@ -12,7 +12,7 @@ require "<%= @name %>"
 
 module <%= @namespace %>Dev
   # Example of how to explicitly require a file
-  #require "<%= @name %>_dev/my_file"
+  # require "<%= @name %>_dev/my_file"
     
   # Load all files in the lib/<%= @name %>_dev directory.
   # Note that there is no problem from requiring a file twice (Ruby will ignore
