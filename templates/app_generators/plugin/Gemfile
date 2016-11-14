@@ -11,6 +11,7 @@ source '<%= Origen.site_config.gem_server %>'
 gem 'coveralls', require: false
 <% end -%>
 gem 'byebug'
+gem 'ripper-tags'
 gem 'origen_doc_helpers'
 # Uncomment these if you want to use a visual debugger (e.g. Visual Studio Code) to debug your app
 #gem 'ruby-debug-ide'

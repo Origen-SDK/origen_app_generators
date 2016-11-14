@@ -13,12 +13,17 @@ aliases ={
 # Now branch to the specific task code
 case @command
 
-# Here is an example of how to implement a command, the logic can go straight
-# in here or you can require an external file if preferred.
-when "my_command"
-  puts "Doing something..."
+# (Working) example of how to create an application specific comment, here to generate
+# a tags file for you application to enable method definition lookup and similar within
+# editors/IDEs
+when "tags"  
+  # Here the logic is just written in-line, alternatively it could be written in a
+  # dedicated file and required here, e.g.
   #require "commands/my_command"    # Would load file lib/commands/my_command.rb
-  # You must always exit upon successfully capturing a command to prevent 
+  Dir.chdir Origen.root do
+    system("ripper-tags -R")
+  end
+  # You must always exit upon successfully capturing and executing a command to prevent 
   # control flowing back to Origen
   exit 0
 
@@ -63,12 +68,12 @@ when "my_command"
 # Origen command handler.
 else
   # You probably want to also add the your commands to the help shown via
-  # origen -h, you can do this be assigning the required text to @application_commands
-  # before handing control back to Origen. Un-comment the example below to get started.
-#  @application_commands = <<-EOT
+  # origen -h, you can do this by assigning the required text to @application_commands
+  # before handing control back to Origen.
+  @application_commands = <<-EOT
+ tags         Build a tags file for this app
+  EOT
 # specs        Run the specs (tests), -c will enable coverage
 # examples     Run the examples (tests), -c will enable coverage
 # test         Run both specs and examples, -c will enable coverage
-#  EOT
-
 end 
