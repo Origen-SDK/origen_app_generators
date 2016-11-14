@@ -19,7 +19,7 @@ case @command
 when "tags"  
   # Here the logic is just written in-line, alternatively it could be written in a
   # dedicated file and required here, e.g.
-  #require "commands/my_command"    # Would load file lib/commands/my_command.rb
+  #require "<%= @name %>/commands/my_command"    # Would load file lib/<%= @name %>/commands/my_command.rb
   Dir.chdir Origen.root do
     system("ripper-tags -R")
   end
