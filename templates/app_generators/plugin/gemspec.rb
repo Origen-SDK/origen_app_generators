@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   # Only the files that are hit by these wildcards will be included in the
   # packaged gem, the default should hit everything in most cases but this will
   # need to be added to if you have any custom directories
-  spec.files         = Dir["lib/**/*.rb", "templates/**/*", "config/**/*.rb",
+  spec.files         = Dir["lib/<%= @name %>.rb", "lib/<%= @name %>/**/*.rb", "templates/**/*", "config/**/*.rb",
                            "bin/*", "lib/tasks/**/*.rake", "pattern/**/*.rb",
                            "program/**/*.rb"
                           ]
