@@ -32,9 +32,4 @@ Gem::Specification.new do |spec|
   # THEREFORE GENERATORS MUST NOT RELY ON ANY 3RD PARTY GEMS THAT ARE NOT
   # PRESENT AS PART OF A STANDARD ORIGEN INSTALLATION - I.E. YOU CAN ONLY RELY
   # ON THE GEMS THAT ORIGEN ITSELF DEPENDS ON.
-  #
-  # DEVELOPMENT ONLY DEPENDENCIES ARE ALLOWED AND CAN BE ADDED BELOW.
-
-  # Add any gems that your plugin needs for its development environment only
-  #spec.add_development_dependency "doc_helpers", ">= 1.7.0"
 end
