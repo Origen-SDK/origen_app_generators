@@ -16,11 +16,11 @@ module <%= @namespace %>Dev
     end
 
     def write_register(reg, options = {})
-      arm_debug.write_register(reg, options)
+      arm_debug.mem_ap.write_register(reg, options)
     end
 
     def read_register(reg, options = {})
-      arm_debug.read_register(reg, options)
+      arm_debug.mem_ap.read_register(reg, options)
     end
   end
 end
