@@ -1,7 +1,7 @@
 module <%= @namespace %>
   class Interface
     include OrigenTesters::ProgramGenerators
-    
+
     # This will be called at the start of every flow or sub-flow (whenever Flow.create
     # is called).
     # Any options passed to Flow.create will be passed in here.
