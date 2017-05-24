@@ -3,6 +3,8 @@ module <%= @namespace %>Dev
   # integrate into a top-level app
   class DUT
     include Origen::TopLevel
+    include OrigenJTAG
+    include OrigenARMDebug
 
     def initialize(options = {})
       instantiate_pins(options)
@@ -18,7 +20,7 @@ module <%= @namespace %>Dev
     end
 
     def instantiate_sub_blocks(options)
-      sub_block :arm_debug, class_name: 'OrigenARMDebug::Driver', mem_aps: { mem_ap: 0x0, mdmap: 0x0100_0000 }
+      sub_block :arm_debug, class_name: 'OrigenARMDebug::DAP', mem_aps: { mem_ap: 0x0, mdmap: 0x0100_0000 }
       sub_block :<%= options[:sub_block_name] %>, class_name: '<%= @namespace %>::<%= options[:class_name] %>', base_address: 0x1000_0000
     end
   end

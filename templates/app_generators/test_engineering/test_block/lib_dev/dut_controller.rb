@@ -2,10 +2,6 @@ module <%= @namespace %>Dev
   # This is a dummy DUT controller that should be used to test that your test module can
   # integrate into a top-level app
   class DUTController
-    include Origen::TopLevel
-    include OrigenJTAG
-    include OrigenARMDebug
-
     def startup(options = {})
       tester.set_timeset('func_25', 40)
       ss 'Startup the SoC'
