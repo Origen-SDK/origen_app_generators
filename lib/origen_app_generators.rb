@@ -32,6 +32,20 @@ module OrigenAppGenerators
     ]
   }
 
+  def self.add_generators(new_generators)
+    new_generators.each do |domain, gens|
+      if AVAILABLE[domain]
+        gens.each { |g| AVAILABLE[domain].unshift(g) }
+        new_generators.delete(domain)
+      end
+    end
+    @generators = new_generators.merge(generators)
+  end
+
+  def self.generators
+    @generators ||= AVAILABLE
+  end
+
   def self.invoke(path)
     puts
     puts 'CHOOSE AN ENGINEERING DOMAIN'
@@ -41,7 +55,7 @@ module OrigenAppGenerators
     i = 0
     accept = [0]
     puts '0 - Empty / Not listed'
-    AVAILABLE.reverse_each do |domain, _generators|
+    generators.reverse_each do |domain, _generators|
       i += 1
       accept << i
       puts "#{i} - #{domain}"
@@ -65,7 +79,7 @@ module OrigenAppGenerators
         OrigenAppGenerators::EmptyPlugin.start [path]
       end
     else
-      domain = AVAILABLE.to_a
+      domain = generators.to_a
       domain = domain[domain.size - selection]
       puts
       puts "CHOOSE FROM THE FOLLOWING #{domain[0].upcase} APPLICATION TEMPLATES"
