@@ -113,13 +113,13 @@ module OrigenAppGenerators
 
     def get_domain
       puts
-      puts 'WHAT ENGINEERING DOMAIN WILL YOUR NEW APP TEMPLATE APPLY TO?'
+      puts 'WHAT APPLICATION DOMAIN WILL YOUR NEW APP TEMPLATE APPLY TO?'
       puts
-      puts "Enter something like 'Test', 'Design', 'Product', etc."
+      puts "Enter something like 'Test Engineering', 'Design', etc."
       puts
       domain = get_text(single: true)
-      domain = domain.sub(/ Engineering$/i, '').titleize
-      @domain_summary = "#{domain} Engineering"
+      domain = domain.titleize
+      @domain_summary = domain
       @domain_namespace =  @domain_summary.gsub(' ', '')
     end
 
