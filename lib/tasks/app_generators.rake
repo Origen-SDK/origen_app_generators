@@ -1,8 +1,3 @@
-desc 'Create an application generator'
-task :new do
-  OrigenAppGenerators::New.start []
-end
-
 desc 'Test run the new app process'
 task :test, [:set] do |t, args|
   _delete_tmp_dir

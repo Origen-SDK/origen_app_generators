@@ -11,6 +11,7 @@ module OrigenAppGenerators
       get_name
       get_type
       get_summary
+      @modulename = Origen.app.namespace
     end
 
     def set_type
@@ -23,36 +24,36 @@ module OrigenAppGenerators
 
     def enable
       # Add require line
-      module_declaration = /\nmodule OrigenAppGenerators/
-      inject_into_file 'lib/origen_app_generators.rb', "require 'origen_app_generators/#{@domain_namespace.underscore}/#{@classname.underscore}'\n",
+      module_declaration = /\nmodule #{Origen.app.namespace}/
+      inject_into_file "lib/#{Origen.app.name}.rb", "require '#{Origen.app.name}/#{@domain_namespace.underscore}/#{@classname.underscore}'\n",
                        before: module_declaration
 
       # Add to the AVAILABLE hash
-      if OrigenAppGenerators::AVAILABLE[@domain_summary]
+      if Origen.app.namespace.constantize::AVAILABLE[@domain_summary]
         existing_domain = /\s*('|")#{@domain_summary}('|") => \[\s*\n/
-        inject_into_file 'lib/origen_app_generators.rb', "      OrigenAppGenerators::#{@domain_namespace}::#{@classname},\n",
+        inject_into_file "lib/#{Origen.app.name}.rb", "      #{Origen.app.namespace}::#{@domain_namespace}::#{@classname},\n",
                          after: existing_domain
       else
         new_domain = <<-END
     '#{@domain_summary}' => [
-      OrigenAppGenerators::#{@domain_namespace}::#{@classname},
+      #{Origen.app.namespace}::#{@domain_namespace}::#{@classname},
     ],
         END
         available_hash = /AVAILABLE = {\s*\n/
-        inject_into_file 'lib/origen_app_generators.rb', new_domain, after: available_hash
+        inject_into_file "lib/#{Origen.app.name}.rb", new_domain, after: available_hash
       end
     end
 
     # Can't compile this as contains some final ERB, so substitute instead
-    def customize_doc_page
-      file = filelist[:doc_info][:dest]
-      gsub_file file, 'TITLE_GOES_HERE', @title
-      if @type == :plugin
-        gsub_file file, 'INTRO_GOES_HERE', "This generates a customized version of the [Generic Plugin](<%= path 'origen_app_generators/plugin' %>)."
-      else
-        gsub_file file, 'INTRO_GOES_HERE', "This generates a customized version of the [Generic Application](<%= path 'origen_app_generators/application' %>)."
-      end
-    end
+    # def customize_doc_page
+    #  file = filelist[:doc_info][:dest]
+    #  gsub_file file, 'TITLE_GOES_HERE', @title
+    #  if @type == :plugin
+    #    gsub_file file, 'INTRO_GOES_HERE', "This generates a customized version of the [Generic Plugin](<%= path 'origen_app_generators/plugin' %>)."
+    #  else
+    #    gsub_file file, 'INTRO_GOES_HERE', "This generates a customized version of the [Generic Application](<%= path 'origen_app_generators/application' %>)."
+    #  end
+    # end
 
     def conclude
       puts
@@ -60,17 +61,11 @@ module OrigenAppGenerators
       puts
       puts "Create any template files you need for this generator in: #{filelist[:templates_dir][:dest]}"
       puts
-      puts "Before you go add some documentation about what this generates to: templates/web/origen_app_generators/origen_app_generators/#{@domain_namespace.underscore}/#{@classname.underscore}.md.erb"
-      puts
+      # puts "Before you go add some documentation about what this generates to: templates/web/origen_app_generators/origen_app_generators/#{@domain_namespace.underscore}/#{@classname.underscore}.md.erb"
+      # puts
     end
 
     protected
-
-    def existing_domains
-      OrigenAppGenerators::AVAILABLE.keys.map do |key|
-        key.sub(/ Engineering$/, '')
-      end
-    end
 
     def get_summary
       puts
@@ -86,6 +81,9 @@ module OrigenAppGenerators
       puts
       type = get_text(single: true, accept: %w(application plugin)).downcase
       @parentclass = type.capitalize
+      if Origen.app.name != :origen_app_generators
+        @parentclass = "OrigenAppGenerators::#{@parentclass}"
+      end
     end
 
     def get_name
@@ -100,7 +98,7 @@ module OrigenAppGenerators
         @classname = get_text(single: true).split('::').last
         unless @classname.empty?
           if @classname.length >= 3
-            valid = valid_constant?("OrigenAppGenerators::#{@domain_namespace}::#{@classname}")
+            valid = valid_constant?("#{Origen.app.namespace}::#{@domain_namespace}::#{@classname}")
           end
           unless valid
             puts 'That class name is not valid :-('
@@ -126,11 +124,11 @@ module OrigenAppGenerators
     def filelist
       @filelist ||= {
         generator:     { source: 'generator.rb',
-                         dest:   "lib/origen_app_generators/#{@domain_namespace.underscore}/#{@classname.underscore}.rb" },
+                         dest:   "lib/#{Origen.app.name}/#{@domain_namespace.underscore}/#{@classname.underscore}.rb" },
         templates_dir: { dest: "templates/app_generators/#{@domain_namespace.underscore}/#{@classname.underscore}",
                          type: :directory },
-        doc_info:      { source: 'info.md.erb',
-                         dest:   "templates/web/origen_app_generators/#{@domain_namespace.underscore}/#{@classname.underscore}.md.erb" }
+        # doc_info:      { source: 'info.md.erb',
+        #                 dest:   "templates/web/#{Origen.app.name}/#{@domain_namespace.underscore}/#{@classname.underscore}.md.erb" }
       }
     end
   end

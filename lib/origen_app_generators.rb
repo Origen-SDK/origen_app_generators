@@ -1,4 +1,5 @@
 require 'origen'
+require_relative '../config/application.rb'
 require 'colored'
 require 'origen_app_generators/base'
 require 'origen_app_generators/application'

@@ -37,6 +37,13 @@ class OrigenAppGeneratorsApplication < Origen::Application
   # In parallel go and edit config/version.rb to enable the semantic version code.
   config.semantically_version = true
 
+  config.shared = {
+    #patterns: "pattern",
+    #templates: "templates",
+    #programs: "program",
+    command_launcher: "config/shared_commands.rb"
+  }
+
   # An example of how to set application specific LSF parameters
   #config.lsf.project = "msg.te"
   

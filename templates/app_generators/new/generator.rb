@@ -1,4 +1,4 @@
-module OrigenAppGenerators
+module <%= @modulename %>
   module <%= @domain_namespace %>
     # Generates a generic application shell
     class <%= @classname %> < <%= @parentclass %>
