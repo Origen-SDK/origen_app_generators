@@ -8,6 +8,7 @@ require 'origen_app_generators/empty_plugin'
 require 'origen_app_generators/new'
 require 'origen_app_generators/test_engineering/test_block'
 require 'origen_app_generators/test_engineering/stand_alone_application'
+require 'origen_app_generators/origen_infrastructure/app_generator_plugin'
 
 module OrigenAppGenerators
   extend Origen::Utility::InputCapture
@@ -18,17 +19,20 @@ module OrigenAppGenerators
     # Empty plugin
     ['0', '1', :default, :default, 'A test block', 'yes', []],
     # Stand alone test engineering app
-    ['1', '0', :default, :default, 'Falcon, Eagle', 'Falcon[ram, atd(2), comm[ram(2), osc](3)], Eagle[ram(2), atd(4)]', ['origen g example']],
+    ['2', '0', :default, :default, 'Falcon, Eagle', 'Falcon[ram, atd(2), comm[ram(2), osc](3)], Eagle[ram(2), atd(4)]', ['origen g example']],
     # Test module
-    ['1', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', ['origen g example']]
+    ['2', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', ['origen g example']]
   ]
 
   # If adding any new generators manually always add them at the top, but
   # generally speaking don't, use 'rake new' to create a new generator instead
   AVAILABLE = {
-    'Test Engineering' => [
+    'Test Engineering'      => [
       OrigenAppGenerators::TestEngineering::TestBlock,
       OrigenAppGenerators::TestEngineering::StandAloneApplication
+    ],
+    'Origen Infrastructure' => [
+      OrigenAppGenerators::OrigenInfrastructure::AppGeneratorPlugin
     ]
   }
 
@@ -48,7 +52,7 @@ module OrigenAppGenerators
 
   def self.invoke(path)
     puts
-    puts 'CHOOSE AN ENGINEERING DOMAIN'
+    puts 'CHOOSE AN APPLICATION DOMAIN'
     puts
     puts "Domain-specific application templates are available for the following areas (enter '0' to build an empty generic one)"
     puts
