@@ -47,6 +47,10 @@ module OrigenAppGenerators
       def conclude
         # Print out anything you think the user should know about their new application at the end
         puts "New app created at: #{destination_root}"
+        puts
+        puts 'Create your first generator by running this command within your new app:'
+        puts '  origen app_gen:new'
+        puts
       end
 
       protected
@@ -78,8 +82,8 @@ module OrigenAppGenerators
           # the same location in the new app
           # list[:config_shared_commands] = { source: 'config/shared_commands.rb' }
           list[:config_load_generators] = { source: 'config/load_generators.rb' }
-          list[:lib_plugin] = { source: 'lib/plugin.rb' }
-          list[:lib_application] = { source: 'lib/application.rb' }
+          list[:lib_plugin] = { source: 'lib/plugin.rb', dest: "lib/#{@name}/plugin.rb" }
+          list[:lib_application] = { source: 'lib/application.rb', dest: "lib/#{@name}/application.rb" }
           # Alternatively specifying a different destination, typically you would do this when
           # the final location is dynamic
           # list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }

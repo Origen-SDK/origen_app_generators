@@ -22,7 +22,9 @@ module OrigenAppGenerators
     # 2 - Stand alone test engineering app
     ['2', '0', :default, :default, 'Falcon, Eagle', 'Falcon[ram, atd(2), comm[ram(2), osc](3)], Eagle[ram(2), atd(4)]', [:default, 'origen g example']],
     # 3 - Test module
-    ['2', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', [:default, 'origen g example']]
+    ['2', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', [:default, 'origen g example']],
+    # 4 - An app generators plugin
+    ['1', '0', :default, :default, 'My application generators', :default]
   ]
 
   # If adding any new generators manually always add them at the top, but
@@ -39,8 +41,8 @@ module OrigenAppGenerators
 
   def self.add_generators(new_generators)
     new_generators.each do |domain, gens|
-      if AVAILABLE[domain]
-        gens.each { |g| AVAILABLE[domain].unshift(g) }
+      if generators[domain]
+        gens.each { |g| generators[domain].unshift(g) }
         new_generators.delete(domain)
       end
     end

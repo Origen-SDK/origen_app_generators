@@ -31,12 +31,12 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "origen", ">= <%= @latest_origen_version %>"
 <% if @runtime_dependencies -%>  
   <% @runtime_dependencies.each do |dep| -%>
-  spec.add_runtime_dependency <%= dep.map{ |d| "\"#{d}\"" }.join(', ') %>
+spec.add_runtime_dependency <%= dep.map{ |d| "\"#{d}\"" }.join(', ') %>
   <% end -%>
 <% end -%>
 <% if @post_runtime_dependency_comments -%>  
   <% @post_runtime_dependency_comments.each do |line| -%>
-  # <%= line %>
+# <%= line %>
   <% end -%>
 <% end -%>
 end
