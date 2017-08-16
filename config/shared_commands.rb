@@ -4,6 +4,11 @@ case @command
 when "app_gen:test"
   options = {}
 
+  # Internal option, not intended for the user
+  if ARGV.delete("--no_bundler_management")
+    options[:no_bundler_management] = true
+  end
+
   opt_parser = OptionParser.new do |opts|
     opts.banner = <<-END
 Test the generators by emulating the 'origen new' command execution and building the new
@@ -30,7 +35,7 @@ END
       inputs = [Origen.app.namespace.constantize::TEST_INPUTS[options[:inputs].to_i]]
     end
 
-    prefix = 'bundle exec ' unless Origen.site_config.gem_manage_bundler
+    prefix = 'bundle exec ' if !Origen.site_config.gem_manage_bundler
 
     overall_fail = false
 
@@ -58,6 +63,7 @@ END
       cmd = "#{prefix} origen app_gen:test"
       cmd += ' --debugger' if options[:debugger]
       cmd += ' --all_generators' if options[:all_generators]
+      cmd += ' --no_bundler_management' if prefix
       passed = false
       Bundler.with_clean_env do
         puts cmd
@@ -75,7 +81,7 @@ END
           Bundler.with_clean_env do
             Dir.chdir "#{Origen.root}/tmp" do
               post_build_operations.each_with_index do |op, i|
-                if i == 0 && !Origen.site_config.gem_manage_bundler
+                if i == 0 && prefix
                   system('bundle')
                 end
                 Origen.log.info "Running command: #{op}"
@@ -130,7 +136,7 @@ END
     cmd = "#{boot} #{origen_lib} #{app_gen_lib} #{app_lib} #{load_generators}"
     cmd = "#{cmd} true" if options[:all_generators] || Origen.app.name == :origen_app_generators
     cmd = "ruby #{cmd}" if Origen.os.windows?
-    cmd = "bundle exec #{cmd}" unless Origen.site_config.gem_manage_bundler
+    cmd = "bundle exec #{cmd}" if !Origen.site_config.gem_manage_bundler || options[:no_bundler_management]
     # puts cmd
     passed = false
     Bundler.with_clean_env do
