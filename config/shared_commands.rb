@@ -30,9 +30,7 @@ END
       inputs = [Origen.app.namespace.constantize::TEST_INPUTS[options[:inputs].to_i]]
     end
 
-    puts "*****************  GEM_MANAGE_BUNDLER_IS: #{Origen.site_config.gem_manage_bundler}"
-
-    prefix = 'bundle exec ' unless false #Origen.site_config.gem_manage_bundler
+    prefix = 'bundle exec ' unless Origen.site_config.gem_manage_bundler
 
     overall_fail = false
 
@@ -77,7 +75,7 @@ END
           Bundler.with_clean_env do
             Dir.chdir "#{Origen.root}/tmp" do
               post_build_operations.each_with_index do |op, i|
-                if i == 0 && !false#Origen.site_config.gem_manage_bundler
+                if i == 0 && !Origen.site_config.gem_manage_bundler
                   system('bundle')
                 end
                 Origen.log.info "Running command: #{op}"
@@ -132,7 +130,7 @@ END
     cmd = "#{boot} #{origen_lib} #{app_gen_lib} #{app_lib} #{load_generators}"
     cmd = "#{cmd} true" if options[:all_generators] || Origen.app.name == :origen_app_generators
     cmd = "ruby #{cmd}" if Origen.os.windows?
-    cmd = "bundle exec #{cmd}" unless false#Origen.site_config.gem_manage_bundler
+    cmd = "bundle exec #{cmd}" unless Origen.site_config.gem_manage_bundler
     # puts cmd
     passed = false
     Bundler.with_clean_env do
