@@ -30,6 +30,10 @@ END
       inputs = [Origen.app.namespace.constantize::TEST_INPUTS[options[:inputs].to_i]]
     end
 
+    if ENV['TRAVIS'] && ENV['CONTINUOUS_INTEGRATION']		
+      prefix = 'bundle && bundle exec '		
+    end
+
     overall_fail = false
 
     inputs.each do |vals|
@@ -53,7 +57,7 @@ END
       end.flatten
 
       str = vals.map { |i| i == :default ? "\n" : "#{i}\n" }.join('')
-      cmd = 'origen app_gen:test'
+      cmd = "#{prefix} origen app_gen:test"
       cmd += ' --debugger' if options[:debugger]
       cmd += ' --all_generators' if options[:all_generators]
       passed = false
@@ -69,9 +73,6 @@ END
           end
 
           operation_failed = false
-          if ENV['TRAVIS'] && ENV['CONTINUOUS_INTEGRATION']		
-            prefix = 'bundle && bundle exec '		
-          end
           Bundler.with_clean_env do
             Dir.chdir "#{Origen.root}/tmp" do
               post_build_operations.each_with_index do |op, i|
