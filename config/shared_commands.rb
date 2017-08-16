@@ -36,6 +36,7 @@ END
     end
 
     puts "*********** gem_manage_bundler is: #{Origen.site_config.gem_manage_bundler}"
+    puts "*********** gem_manage_bundler is a: #{Origen.site_config.gem_manage_bundler.class}"
 
     prefix = 'bundle exec ' unless Origen.site_config.gem_manage_bundler
 
