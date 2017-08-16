@@ -35,7 +35,11 @@ END
       inputs = [Origen.app.namespace.constantize::TEST_INPUTS[options[:inputs].to_i]]
     end
 
+    puts "*********** gem_manage_bundler is: #{Origen.site_config.gem_manage_bundler}"
+
     prefix = 'bundle exec ' if !Origen.site_config.gem_manage_bundler
+
+    puts "*********1 prefix is: #{prefix}"
 
     overall_fail = false
 
@@ -60,6 +64,7 @@ END
       end.flatten
 
       str = vals.map { |i| i == :default ? "\n" : "#{i}\n" }.join('')
+      puts "*********2 prefix is: #{prefix}"
       cmd = "#{prefix} origen app_gen:test"
       cmd += ' --debugger' if options[:debugger]
       cmd += ' --all_generators' if options[:all_generators]
@@ -136,6 +141,7 @@ END
     cmd = "#{boot} #{origen_lib} #{app_gen_lib} #{app_lib} #{load_generators}"
     cmd = "#{cmd} true" if options[:all_generators] || Origen.app.name == :origen_app_generators
     cmd = "ruby #{cmd}" if Origen.os.windows?
+    puts "********* options are: #{options}"
     cmd = "bundle exec #{cmd}" if !Origen.site_config.gem_manage_bundler || options[:no_bundler_management]
     # puts cmd
     passed = false
