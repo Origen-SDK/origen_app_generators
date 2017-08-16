@@ -37,7 +37,7 @@ END
 
     puts "*********** gem_manage_bundler is: #{Origen.site_config.gem_manage_bundler}"
 
-    prefix = 'bundle exec ' if !Origen.site_config.gem_manage_bundler
+    prefix = 'bundle exec ' unless Origen.site_config.gem_manage_bundler
 
     puts "*********1 prefix is: #{prefix}"
 
