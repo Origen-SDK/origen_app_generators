@@ -69,14 +69,16 @@ END
           end
 
           operation_failed = false
-
+          if ENV['TRAVIS'] && ENV['CONTINUOUS_INTEGRATION']		
+            prefix = 'bundle && bundle exec '		
+          end
           Bundler.with_clean_env do
             Dir.chdir "#{Origen.root}/tmp" do
               post_build_operations.each_with_index do |op, i|
                 #system("bundle") if i == 0
                 Origen.log.info "Running command: #{op}"
                 #if system("bundle exec #{op}")
-                if system(op)
+                if system("#{prefix}#{op}")
                   Origen.log.success "Command passed: #{op}"
                 else
                   Origen.log.error "Command failed: #{op}"
