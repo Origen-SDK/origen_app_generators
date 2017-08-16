@@ -4,6 +4,7 @@ rvm:
   - 2.2.2
 script:
   - gem install bundler
+  - gem install pry
   - bundle exec origen -v
   - bundle exec origen specs
   - bundle exec origen app_gen:test --regression
