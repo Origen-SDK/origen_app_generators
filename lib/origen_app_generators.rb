@@ -15,14 +15,14 @@ module OrigenAppGenerators
   extend Origen::Utility::InputCapture
 
   TEST_INPUTS = [
-    # Empty app
-    ['0', '0', :default, :default, []],
-    # Empty plugin
-    ['0', '1', :default, :default, 'A test block', 'yes', []],
-    # Stand alone test engineering app
-    ['2', '0', :default, :default, 'Falcon, Eagle', 'Falcon[ram, atd(2), comm[ram(2), osc](3)], Eagle[ram(2), atd(4)]', ['origen g example']],
-    # Test module
-    ['2', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', ['origen g example']]
+    # 0 - Empty app
+    ['0', '0', :default, :default, :default],
+    # 1 - Empty plugin
+    ['0', '1', :default, :default, 'A test block', 'yes', :default],
+    # 2 - Stand alone test engineering app
+    ['2', '0', :default, :default, 'Falcon, Eagle', 'Falcon[ram, atd(2), comm[ram(2), osc](3)], Eagle[ram(2), atd(4)]', [:default, 'origen g example']],
+    # 3 - Test module
+    ['2', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', [:default, 'origen g example']]
   ]
 
   # If adding any new generators manually always add them at the top, but
@@ -45,6 +45,10 @@ module OrigenAppGenerators
       end
     end
     @generators = new_generators.merge(generators)
+  end
+
+  def self.unload_generators
+    @generators = {}
   end
 
   def self.generators

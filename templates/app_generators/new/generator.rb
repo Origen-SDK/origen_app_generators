@@ -1,4 +1,4 @@
-module <%= @modulename %>
+module <%= @namespace %>
   module <%= @domain_namespace %>
     # Generates a generic application shell
     class <%= @classname %> < <%= @parentclass %>

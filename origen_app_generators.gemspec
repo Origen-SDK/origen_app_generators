@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["stephen.f.mcginty@gmail.com"]
   spec.summary       = "Origen application generators"
   spec.homepage      = "http://origen-sdk.org/origen_app_generators"
-  spec.license       = 'LGPL-3'
+  spec.license       = 'MIT'
   spec.required_ruby_version     = '>= 1.9.3'
   spec.required_rubygems_version = '>= 1.8.11'
 

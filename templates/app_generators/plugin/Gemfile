@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 source '<%= Origen.site_config.gem_server %>'
 <% end -%>
 
-# Only development dependencies (things your only plugin needs when running in its own workspace) should
-# be listed here in the Gemfile
+# Only development dependencies (things your plugin needs only when it is running in its own workspace)
+# should be listed here in the Gemfile
 <% if @audience == :external -%>
 # This gem provides integration with https://coveralls.io/ to monitor
 # your application's test coverage

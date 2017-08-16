@@ -4,6 +4,11 @@ module OrigenAppGenerators
     class AppGeneratorPlugin < Plugin
       desc "A plugin to make your own application templates available through the 'origen new' command"
 
+      def initialize(*args)
+        @audience = :internal
+        super
+      end
+
       # Any methods that are not protected will get invoked in the order that they are
       # defined when the generator is run, method naming is irrelevant unless you want
       # to override a method that is defined by the parent class
@@ -15,6 +20,18 @@ module OrigenAppGenerators
       end
 
       def generate_files
+        @runtime_dependencies = [
+          ['origen_app_generators', ">= #{Origen.app!.version}"]
+        ]
+        @post_runtime_dependency_comments = [
+          'DO NOT ADD ANY ADDITIONAL RUNTIME DEPENDENCIES HERE, WHEN THESE GENERATORS',
+          'ARE INVOKED TO GENERATE A NEW APPLICATION IT WILL NOT BE LAUNCHED FROM WITHIN',
+          'A BUNDLED ENVIRONMENT.',
+          '',
+          'THEREFORE GENERATORS MUST NOT RELY ON ANY 3RD PARTY GEMS THAT ARE NOT',
+          'PRESENT AS PART OF A STANDARD ORIGEN INSTALLATION - I.E. YOU CAN ONLY RELY',
+          'ON THE GEMS THAT ORIGEN ITSELF DEPENDS ON.'
+        ]
         # Calling this will build all files, directories and symlinks contained in the
         # hash returned by the filelist method
         build_filelist
@@ -55,9 +72,14 @@ module OrigenAppGenerators
           list = super  # Always pick up the parent list
           # Example of how to remove a file from the parent list
           # list.delete(:web_doc_layout)
+          list.delete(:lib_readme)
+          list.delete(:lib_readme_dev)
           # Example of how to add a file, in this case the file will be compiled and copied to
           # the same location in the new app
           # list[:config_shared_commands] = { source: 'config/shared_commands.rb' }
+          list[:config_load_generators] = { source: 'config/load_generators.rb' }
+          list[:lib_plugin] = { source: 'lib/plugin.rb' }
+          list[:lib_application] = { source: 'lib/application.rb' }
           # Alternatively specifying a different destination, typically you would do this when
           # the final location is dynamic
           # list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }

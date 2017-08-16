@@ -27,7 +27,7 @@ module OrigenAppGenerators
           list[:web_navbar] = { source: 'templates/web/partials/_navbar_internal.html.erb', dest: 'templates/web/partials/_navbar.html.erb' }
         end
         list[:lib_readme] = { source: 'lib/README', dest: "lib/#{@name}/README" }
-        list[:lib_reame_dev] = { source: 'lib_dev/README', dest: "lib/#{@name}_dev/README" }
+        list[:lib_readme_dev] = { source: 'lib_dev/README', dest: "lib/#{@name}_dev/README" }
         list
       end
     end

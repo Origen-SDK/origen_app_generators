@@ -11,7 +11,7 @@ module OrigenAppGenerators
       get_name
       get_type
       get_summary
-      @modulename = Origen.app.namespace
+      @namespace = Origen.app.namespace
     end
 
     def set_type
@@ -81,9 +81,6 @@ module OrigenAppGenerators
       puts
       type = get_text(single: true, accept: %w(application plugin)).downcase
       @parentclass = type.capitalize
-      if Origen.app.name != :origen_app_generators
-        @parentclass = "OrigenAppGenerators::#{@parentclass}"
-      end
     end
 
     def get_name
