@@ -62,6 +62,7 @@ END
       cmd += ' --all_generators' if options[:all_generators]
       passed = false
       Bundler.with_clean_env do
+        puts cmd
         passed = system "echo '#{str}' | #{cmd}"
       end
 
@@ -76,9 +77,7 @@ END
           Bundler.with_clean_env do
             Dir.chdir "#{Origen.root}/tmp" do
               post_build_operations.each_with_index do |op, i|
-                #system("bundle") if i == 0
                 Origen.log.info "Running command: #{op}"
-                #if system("bundle exec #{op}")
                 if system("#{prefix}#{op}")
                   Origen.log.success "Command passed: #{op}"
                 else
