@@ -30,9 +30,7 @@ END
       inputs = [Origen.app.namespace.constantize::TEST_INPUTS[options[:inputs].to_i]]
     end
 
-    if ENV['TRAVIS'] && ENV['CONTINUOUS_INTEGRATION']		
-      prefix = 'bundle && bundle exec '		
-    end
+    prefix = 'bundle exec ' unless Origen.site_config.gem_manage_bundler
 
     overall_fail = false
 
@@ -77,6 +75,9 @@ END
           Bundler.with_clean_env do
             Dir.chdir "#{Origen.root}/tmp" do
               post_build_operations.each_with_index do |op, i|
+                if i == 0 && !Origen.site_config.gem_manage_bundler
+                  system('bundle')
+                end
                 Origen.log.info "Running command: #{op}"
                 if system("#{prefix}#{op}")
                   Origen.log.success "Command passed: #{op}"
@@ -122,6 +123,7 @@ END
     # this is to emulate how it will run in real life and cause it to fail if there are
     # any dependencies on running within an Origen app environment
     boot = "#{Origen.root!}/bin/boot.rb"
+    boot = "bundle exec #{boot}" unless Origen.site_config.gem_manage_bundler
     origen_lib = "#{Origen.top}/lib"
     app_gen_lib = "#{Origen.root!}/lib"
     app_lib = "#{Origen.root}/lib"
