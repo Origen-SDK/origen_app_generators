@@ -80,7 +80,17 @@ class <%= @namespace %>Application < Origen::Application
   #    system command
   #  end
   #end
-
+<% if @validate_release_tests %>  
+  # Ensure that all tests pass before allowing a release to continue
+  def validate_release
+    if <%= Array(@validate_release_tests).map { |t| "!system('#{t}')" }.join(' || ') %>
+      puts "Sorry but you can't release with failing tests, please fix them and try again."
+      exit 1
+    else
+      puts "All tests passing, proceeding with release process!"
+    end
+  end
+<% else %>
   # Ensure that all tests pass before allowing a release to continue
   #def validate_release
   #  if !system("origen specs") || !system("origen examples")
@@ -90,6 +100,7 @@ class <%= @namespace %>Application < Origen::Application
   #    puts "All tests passing, proceeding with release process!"
   #  end
   #end
+<% end -%>
 
   # To enabled source-less pattern generation create a class (for example PatternDispatcher)
   # to generate the pattern. This should return false if the requested pattern has been

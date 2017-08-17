@@ -6,6 +6,7 @@ module OrigenAppGenerators
 
       def initialize(*args)
         @audience = :internal
+        @validate_release_tests = ['origen app_gen:test --regression']
         super
       end
 
