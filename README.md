@@ -327,7 +327,7 @@ Then in the template:
 
 ```eruby
 The product name is <%= @product_name %>
-~~~
+```
 
 By convention, templates in this plugin do not end in `.erb` and this is reserved
 for files that would become `.erb` files in the end application.
@@ -344,10 +344,10 @@ You can see some examples of these being used in the `enable` method in
 `lib/app_generators/new.rb` where they are used to add the new generator details
 to `lib/origen_app_generators.rb`.
 
-As a quick example say you wanted to add a method to <code>config/application.rb</code>, this
+As a quick example say you wanted to add a method to `config/application.rb`, this
 could be achieved by injecting it at the end of the class like this:
 
-~~~ruby
+```ruby
 # Always ensure the filelist has been rendered first
 def generate_files
   build_filelist 
@@ -363,36 +363,8 @@ def add_method_to_application
   def some_domain_specific_method
     do_something
   end  
-END
+  END
   # Now inject it
   inject_into_file "config/application.rb", code, before: end_of_class
 end
-~~~
-
-### Documentation
-
-The rake task will create a documentation file for your new generator in
-<code>templates/web/rgen_app_generators/</code> and this should be used to document
-any information about the new application shell that your target audience might find useful. 
-
-This page will be automatically linked to from the [RGenAppGenerators Homepage](<%= path "/" %>)
-when it is next released.
-
-### Testing the Generator
-
-Rake tasks are provided to test your new generator, to run the <code>rgen new</code> command as
-it would appear to your audience run <code>rake test</code>.
-
-Alternatively to skip the first section that selects the required generator you can run
-<code>rake 'run[TestEngineering::TestBlock]'</code>, substituting the class name for that of
-your new generator.
-
-In both cases the new application will be built in <code>tmp/</code> and you can cd into
-that and run it to see if everything works.
-
-### Releasing the Generator
-
-To release the generator simply release a new production version of this plugin, the
-<code>rgen new</code> command will automatically check for and run the latest production version
-of it every time it is invoked.
-
+```
