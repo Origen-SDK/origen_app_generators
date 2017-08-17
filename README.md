@@ -3,30 +3,64 @@
 
 # Origen App Generators
 
-New application generators, this basically implements the 'origen new' command.
-
-It is maintained separately from the main Origen core so that improvements and new
+This plugin implements all of the starter applications that can be generated from the `origen new` command.
+It is maintained separately from Origen core so that improvements and new
 application templates can be released independently of the base platform.
 
-This app also provides an API for companies to extend the generic application
-templates with their own domain-specific templates.
+Additionally, it provides infrastructure and APIs to allow companies to create their own version
+of this plugin, allowing them to create their own customized starter application templates and then 
+make them available to their users via `origen new`.
 
-## Development Considerations
+To extend `origen new` with your own custom application generators,
+run `origen new` and create your own version of this plugin by selecting the following options:
 
-To create a new application generator template run:
+* 1 - Origen Infrastructure
+  * 0 - A plugin to make your own application templates available through the 'origen new' command
+  
+To hook your plugin into the `origen new` command, either release it to your private gem server, check it into your
+Git server, or copy it to a central location that is accessible to all of your users.
+Then update the [app_generators](https://github.com/Origen-SDK/origen/blob/master/origen_site_config.yml#L7) attribute within your
+[site_config file](http://origen-sdk.org/origen/guides/starting/company/) to point to wherever you have put it.
 
-~~~text
-rake new
-~~~
+If you don't see it straight away, run `origen new` with the `--fetch` option to force it to
+fetch the latest versions of the generators.
 
-To test run the new app creation process run:
+The notes that follow apply to both the origen_app_generators plugin and any company-specific
+generator plugins.
 
-~~~text
-rake test
-~~~
+## Quickstart
 
-This will build a new app in the tmp/ directory, when complete you can cd into that dir
-and then run 'origen -v' to verify that it can boot.
+To create a new application generator run the following command:
+
+```text
+origen app_gen:new
+```
+
+This will create a new generator within the `lib` directory and will update the top-level file in the `lib` directory
+to properly hook it into the `origen new` system.
+By default, this new generator will create the same empty application or plugin starter that you would get from
+selecting option 0 in the `origen new` command.
+
+You can test run your new generator by running the following command:
+
+```text
+origen app_gen:test
+```
+
+This will build a new app in the application's `tmp` directory, and when complete you can cd into that directory
+and run `origen -v` to verify that it can boot. At this point you can further interact with the application in the
+normal way to test out anything else.
+
+During the creation of a new generator you will likely run it many times as you go through the process of modifying the
+generator and then observing the new output. To make this easier, a system is built in that allows you to automate the
+answers to the questions that are given to the user when creating a new application.
+
+Within the top-level lib file you will see a set of test inputs like this:
+
+
+
+
+
 
 To run a regression test to make sure that all generators build working apps run:
 
@@ -40,7 +74,7 @@ lib/origen_app_generators.rb.
 
 This document outlines the process for creating a new application generator.
 
-### Background
+### Notes on Creating Generators
 
 This plugin uses a code generator API from RGen core which itself leans heavily on a 3rd party gem library called
 Thor. This gem is used quite widely in the Ruby community for this kind of thing, not least by the code generators
