@@ -55,26 +55,66 @@ During the creation of a new generator, you will likely repeat this many times a
 generator and then observing the new output. To make this easier, a system is built in that allows you to automate the
 answers to the questions that are given to the user when creating a new application.
 
-Within the top-level lib file you will see a set of test inputs like this:
+Within the top-level lib file you will see a set of test inputs something like this:
 
+```ruby
+TEST_INPUTS = [
+  # 0 - TestEngineering::MicroTestBlock
+  ['1', '0', :default, :default, 'A cool plugin', 'yes', :default]
+] # END_OF_TEST_INPUTS Don't remove this comment, it is used by the app_gen:new command!
+```
 
+The last item in the array will be a starter set of inputs that has been created for the new genrator that was just added.
+To test the new generator with these inputs supply the `-i` option and supply the index number of the set of inputs you
+wish to apply:
 
+```text
+origen app_gen:test -i 0
+```
+Modify the inputs as required as you further develop the generator, making sure to add a value for any additional questions
+that you add. The `:default` keyword can be used for any questions which have a default option that you wish to select, this
+is equivalent to just pressing return in response to the given question.
 
+In all cases an additional argument must be supplied at the end, this tells the test command about any commands that you want
+to run within the generated application to test it.
+Supplying the `:default` keyword for this argument will execute the following tests:
 
+* origen -v
+* origen lint --no-correct
+* Test that the default target loads cleanly
+* origen web compile --no-serve
 
-To run a regression test to make sure that all generators build working apps run:
+If you want to run no tests, set this final argument to `nil`.
 
-~~~text
-rake regression
-~~~
+Alternatively you can specify your own set of operations by supplying an array of commands:
 
-To add a new app generator to the regression list add a new line to TEST_INPUTS in
-lib/origen_app_generators.rb.
+```ruby
+['1', '0', :default, :default, 'A cool plugin', 'yes', ['origen -v', 'origen g my_pattern']]
+```
 
+Within the array of custom commands you can also supply the `:default` and `:load_target` keywords to execute the default
+set of tests or the load target test respectively, for example:
 
-This document outlines the process for creating a new application generator.
+```ruby
+['1', '0', :default, :default, 'A cool plugin', 'yes', [:default, 'origen g my_pattern']]
+```
 
-### Notes on Creating Generators
+To run a regression test which will execute all sets of test inputs, run:
+
+```text
+origen app_gen:test -r
+```
+
+You should find the generator file itself (the one created for you in a sub-folder of the `lib` directory) well commented
+and with pointers towards examples from existing generators.
+
+Once you are happy with your new generator release your application generators plugin in the normal way. The version of the
+generators picked up by the `origen new` command is automatically refreshed on a per-user basis every 24 hours, or if you
+need access to it immediately run `origen new` with the `--fetch` option to force it.
+
+There now follows a more detailed guide on how to create the generator itself.
+
+## Notes on Creating Generators
 
 This plugin uses a code generator API from RGen core which itself leans heavily on a 3rd party gem library called
 Thor. This gem is used quite widely in the Ruby community for this kind of thing, not least by the code generators
