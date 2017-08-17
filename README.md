@@ -155,7 +155,7 @@ The new application generators should all perform the following functions:
 * Make any final modifications to the resulting files
 * Display any information that the user should know about their new application
 
-#### Generator Execution
+### Generator Execution
 
 When a generator is executed any methods defined in it will be called in the order that they are
 defined.
@@ -204,7 +204,7 @@ input that will be common to all applications.
 
 You can disable this behavior if required by re-defining the relevant methods within the child generator class.
 
-#### Source Files
+### Source Files
 
 All template or static source files for the generators live in `templates/app_generators` and from
 there in sub folders based on the name of the particular generator.
@@ -240,107 +240,97 @@ Then the following source paths will be searched in this order:
 
 This means that if you create a file called `config/application.rb` within
 `<my_app_generators>/templates/app_generators/test_engineering/test_block` then this will override the corresponding
-file from the origen_app_generators.
+file from origen_app_generators.
 
-However see the warning in [The Filelist](<%= path "docs/developers/creating#The_Filelist" %>) section below before doing this!
-
-### Creating a New Generator
-
-A rake task is provided to create a new generator, run it as follows:
-
-~~~text
-rake new
-~~~
+However see the warning in [The Filelist](https://github.com/Origen-SDK/origen_app_generators/blob/master/README.md#the-filelist) section below before doing this!
 
 ### Lean Environment
 
 When the generator is run by a user to generate a new application, it will not run within the scope of an
-RGen application.
-This means that any references to <code>RGen.app</code> within the generator code are meaningless and will
+Origen application.
+This means that any references to `Origen.app` within the generator code are meaningless and will
 result in an error.
 
-Furthermore because there is no application there is also no associated gem bundle, so the generator must
-be able to run within the lean Ruby environment that is used to boot RGen. In practice what this means is
-that you can use any gems that RGen itself relies on (these will be installed in the base Ruby installation),
+Furthermore, because there is no application there is also no associated gem bundle, so the generator must
+be able to run within the lean Ruby environment that is used to boot Origen. In practice what this means is
+that you can use any gems that Origen itself relies on (these will be installed in the base Ruby installation),
 but you cannot use any others.
 
-The rake tasks provided for testing your new generator will run it within the lean environment, so if it
+The `origen app_gen:test` command that is provided for testing the generators will run them within the lean environment, so if it
 works there you can be confident that it will also run in production.
 
 ### The Filelist
 
 Each generator should return the list of files to be created in the new application via its
-<code>filelist</code> method.
+`filelist` method.
 If you don't make any changes to this then it will simply inherit the list of files defined
 by the generator's parent class.
 
 The filelist is also used to define any directories or symlinks that should be created.
-The generator class created by the <code>rake new</code> task contains a commented example of how to add or
+The generator class created by the `origen app_gen:new` command contains a commented example of how to add or
 remove the various elements from the filelist.
 
 Some application generators may not make any changes to the filelist and will simply augment
 the basic application/plugin shell by adding additional code to some of the existing files.
 
 This can be done by either overriding the source file by defining it in the generator's own
-source directory, or by [post-modifying](<%= path "docs/developers/creating#Post_Generation_Modifications" %>)
+source directory, or by [post-modifying](https://github.com/Origen-SDK/origen_app_generators#post-generation-modifications)
 the files after the filelist has been rendered.
 
-<div class="alert">
-  <strong>Warning!</strong> While it is tempting (and easier) to simply copy a source file and then
-  edit it as required for your target application, this will make your generator harder to maintain as it
-  will not automatically pick up changes and improvements to the master templates that will occur over time.
-  Therefore it is always preferable to post-modify the file to delete sections or to modify or add additional code
-  whenever possible.
-</div>
+**Warning!** While it is tempting (and easier) to simply copy a source file and then
+edit it as required for your target application, this will make your generator harder to maintain as it
+will not automatically pick up changes and improvements to the master templates that will occur over time.
+Therefore it is always preferable to post-modify the file to delete sections or to modify or add additional code
+whenever possible.
 
 **Note that developers should not add logic to the application/plugin master source files to
 implement generator specific output. This approach is not scalable as in the future this plugin
 is expected to support many different application types.**
 
-Instead individual generators must either completely override or post-modify the master files
+Instead, individual generators must either completely override or post-modify the master files
 as appropriate.
 
 #### Templates
 
-All files in the file list will be compiled unless explicitly marked with <code>copy: true</code>
-or if the destination file name ends in <code>.erb</code>.
+All files in the file list will be compiled unless explicitly marked with `copy: true`
+or if the destination file name ends in `.erb`.
 
-ERB markup can be used the same way as in regular RGen templates with the following exceptions:
+ERB markup can be used the same way as in regular Origen templates with the following exceptions:
 
 Whole line Ruby is not enabled (a limitation imposed by Thor), therefore instead of this:
 
-~~~eruby 
-<%= "%" %> if x_is_true
+```eruby 
+% if x_is_true
 Include something
-<%= "%" %> end
-~~~
+% end
+```
 
 You must do:
 
-~~~eruby 
-<%= "<" + "% if x_is_true -%" + ">" %>
+```eruby 
+<% if x_is_true -%>
 Include something
-<%= "<" + "% end -%" + ">" %>
-~~~
+<% end -%>
+```
 
 Access to variables collected by your generator at runtime is done by assigning them to instance
-variables (instead of the options hash used by the RGen compiler).
+variables (instead of the options hash used by the Origen compiler).
 
 So for example if you have your user input a product name, then you should assign that to an
 instance variable:
 
-~~~ruby
+```ruby
 @product_name = get_product_name
-~~~
+```
 
 Then in the template:
 
-~~~eruby
-The product name is <%= "<" + "%= @product_name %" + ">" %>
+```eruby
+The product name is <%= @product_name %>
 ~~~
 
-By convention templates in this plugin do not end in <code>.erb</code> and this is reserved
-for files that would become <code>.erb</code> files in the end application.
+By convention, templates in this plugin do not end in `.erb` and this is reserved
+for files that would become `.erb` files in the end application.
 
 ### Post Generation Modifications
 
@@ -350,9 +340,9 @@ by post modification rather than by completely overriding the entire file.
 To do this you have access to the Thor Action methods described here:
 [Thor Action API](http://www.rubydoc.info/github/wycats/thor/Thor/Actions)
 
-You can see some examples of these being used in the <code>enable</code> method in
-<code>lib/app_generators/new.rb</code> where they are used to add the new generator details
-to <code>lib/rgen_app_generators.rb</code>.
+You can see some examples of these being used in the `enable` method in
+`lib/app_generators/new.rb` where they are used to add the new generator details
+to `lib/origen_app_generators.rb`.
 
 As a quick example say you wanted to add a method to <code>config/application.rb</code>, this
 could be achieved by injecting it at the end of the class like this:
