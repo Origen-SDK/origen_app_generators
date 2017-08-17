@@ -36,7 +36,7 @@ To create a new application generator run the following command:
 origen app_gen:new
 ```
 
-This will create a new generator within the `lib` directory and will update the top-level file in the `lib` directory
+This will create a new generator within the `lib` directory and then update the top-level file in the `lib` directory
 to properly hook it into the `origen new` system.
 By default, this new generator will create the same empty application or plugin starter that you would get from
 selecting option 0 in the `origen new` command.
@@ -51,7 +51,7 @@ This will build a new app in the application's `tmp` directory, and when complet
 and run `origen -v` to verify that it can boot. At this point you can further interact with the application in the
 normal way to test out anything else.
 
-During the creation of a new generator you will likely run it many times as you go through the process of modifying the
+During the creation of a new generator, you will likely repeat this many times as you go through the process of modifying the
 generator and then observing the new output. To make this easier, a system is built in that allows you to automate the
 answers to the questions that are given to the user when creating a new application.
 
