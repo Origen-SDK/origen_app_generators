@@ -23,13 +23,16 @@ module OrigenAppGenerators
     end
 
     def enable
-      # Add require line
+      available = Origen.app.namespace.constantize::AVAILABLE
+      test_inputs = Origen.app.namespace.constantize::TEST_INPUTS
+
+      # **** Add require line ****
       module_declaration = /\nmodule #{Origen.app.namespace}/
       inject_into_file "lib/#{Origen.app.name}.rb", "require '#{Origen.app.name}/#{@domain_namespace.underscore}/#{@classname.underscore}'\n",
                        before: module_declaration
 
-      # Add to the AVAILABLE hash
-      if Origen.app.namespace.constantize::AVAILABLE[@domain_summary]
+      # **** Add to the AVAILABLE hash ****
+      if available[@domain_summary]
         existing_domain = /\s*('|")#{@domain_summary}('|") => \[\s*\n/
         inject_into_file "lib/#{Origen.app.name}.rb", "      #{Origen.app.namespace}::#{@domain_namespace}::#{@classname},\n",
                          after: existing_domain
@@ -42,6 +45,25 @@ module OrigenAppGenerators
         available_hash = /AVAILABLE = {\s*\n/
         inject_into_file "lib/#{Origen.app.name}.rb", new_domain, after: available_hash
       end
+
+      # **** Add a starter set of test inputs ****
+      # First work out what the selection numbers will be for the new generator
+      if available[@domain_summary]
+        first = available.size - available.find_index { |k, _| k == @domain_summary }
+        second = available[@domain_summary].size
+      else
+        first = available.size + 1
+        second = 0
+      end
+      inputs = "\n    # #{test_inputs.size} - #{@domain_namespace}::#{@classname}\n"
+      if @parentclass == 'Plugin'
+        inputs += "    ['#{first}', '#{second}', :default, :default, 'A cool plugin', 'yes', :default]"
+      else
+        inputs += "    ['#{first}', '#{second}', :default, :default, :default]"
+      end
+      inputs = ",#{inputs}" unless test_inputs.empty?
+      end_of_test_inputs = /\n\s*]\s*#\s*END_OF_TEST_INPUTS/
+      inject_into_file "lib/#{Origen.app.name}.rb", inputs, before: end_of_test_inputs
     end
 
     # Can't compile this as contains some final ERB, so substitute instead
@@ -56,6 +78,7 @@ module OrigenAppGenerators
     # end
 
     def conclude
+      system "origen lint #{Origen.root}/lib/#{Origen.app.name}.rb"
       puts
       puts "New generator created at: #{filelist[:generator][:dest]}"
       puts

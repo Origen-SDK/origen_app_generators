@@ -25,10 +25,13 @@ module OrigenAppGenerators
     ['2', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', [:default, 'origen g example']],
     # 4 - An app generators plugin
     ['1', '0', :default, :default, 'My application generators', :default]
-  ]
+  ] # END_OF_TEST_INPUTS Don't remove this comment, it is used by the app_gen:new command!
 
-  # If adding any new generators manually always add them at the top, but
-  # generally speaking don't, use 'rake new' to create a new generator instead
+  # As you add new generators to this app they will be entered here, this enables the
+  # mechanism to register them with the 'origen new' command.
+  # You should generally not modify this by hand, instead use the 'origen app_gen:new'
+  # command every time you want to create a new generator, and this will be filled in
+  # for you.
   AVAILABLE = {
     'Test Engineering'      => [
       OrigenAppGenerators::TestEngineering::TestBlock,
@@ -39,6 +42,7 @@ module OrigenAppGenerators
     ]
   }
 
+  # @api private
   def self.add_generators(new_generators)
     new_generators.each do |domain, gens|
       if generators[domain]
@@ -49,14 +53,17 @@ module OrigenAppGenerators
     @generators = new_generators.merge(generators)
   end
 
+  # @api private
   def self.unload_generators
     @generators = {}
   end
 
+  # @api private
   def self.generators
     @generators ||= AVAILABLE
   end
 
+  # @api private
   def self.invoke(path)
     puts
     puts 'CHOOSE AN APPLICATION DOMAIN'
