@@ -43,8 +43,9 @@ module OrigenAppGenerators
   }
 
   # @api private
-  def self.add_generators(new_generators)
+  def self.add_generators(new_generators, options = {})
     new_generators.each do |domain, gens|
+      gens.each { |gen| template_dirs[gen] ||= options[:template_dir] if options[:template_dir] }
       if generators[domain]
         gens.each { |g| generators[domain].unshift(g) }
         new_generators.delete(domain)
@@ -61,6 +62,11 @@ module OrigenAppGenerators
   # @api private
   def self.generators
     @generators ||= AVAILABLE
+  end
+
+  # @api private
+  def self.template_dirs
+    @template_dirs ||= {}
   end
 
   # @api private

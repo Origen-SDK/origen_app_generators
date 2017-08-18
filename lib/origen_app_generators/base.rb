@@ -12,10 +12,17 @@ module OrigenAppGenerators
       # So to keep things sane remove any inherited source paths.
       self.class.source_paths.pop until self.class.source_paths.empty?
       klass = self.class
+
       until klass == OrigenAppGenerators::Base
-        dir = klass.to_s.sub('OrigenAppGenerators::', '').split('::').map(&:underscore).join('/')
-        dir = File.expand_path("../../../templates/app_generators/#{dir}", __FILE__)
-        self.class.source_paths << dir if File.exist?(dir)
+        names = klass.to_s.split('::')
+        names.shift
+        dir = names.map(&:underscore).join('/')
+        if OrigenAppGenerators.template_dirs[klass]
+          dir = File.expand_path("#{OrigenAppGenerators.template_dirs[klass]}/#{dir}", __FILE__)
+        else
+          dir = File.expand_path("#{Origen.root!}/templates/app_generators/#{dir}", __FILE__)
+        end
+        self.class.source_paths << dir if File.exist?(dir) && !self.class.source_paths.include?(dir)
         klass = klass.superclass
       end
     end
