@@ -136,7 +136,14 @@ module OrigenAppGenerators
       puts "Enter something like 'Test Engineering', 'Design', etc."
       puts
       domain = get_text(single: true)
-      domain = domain.titleize
+      domain = domain.split(' ').map do |word|
+        # Ensure all first letters capitalized, but make sure something like
+        # 'NVM' remains 'NVM' and not 'Nvm'
+        letters = word.split('')
+        letters.first.upcase!
+        letters.join
+      end.join(' ')
+
       @domain_summary = domain
       @domain_namespace =  @domain_summary.gsub(' ', '')
     end
