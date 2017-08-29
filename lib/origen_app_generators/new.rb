@@ -62,7 +62,7 @@ module OrigenAppGenerators
         inputs += "    ['#{first}', '#{second}', :default, :default, :default]"
       end
       inputs = ",#{inputs}" unless test_inputs.empty?
-      end_of_test_inputs = /\n\s*]\s*#\s*END_OF_TEST_INPUTS/
+      end_of_test_inputs = /\n\s*\]\s*#\s*END_OF_TEST_INPUTS/
       inject_into_file "lib/#{Origen.app.name}.rb", inputs, before: end_of_test_inputs
     end
 

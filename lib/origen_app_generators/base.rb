@@ -14,15 +14,22 @@ module OrigenAppGenerators
       klass = self.class
 
       until klass == OrigenAppGenerators::Base
-        names = klass.to_s.split('::')
-        names.shift
-        dir = names.map(&:underscore).join('/')
-        if OrigenAppGenerators.template_dirs[klass]
-          dir = File.expand_path("#{OrigenAppGenerators.template_dirs[klass]}/#{dir}", __FILE__)
+        if template_dir = OrigenAppGenerators.template_dirs[klass]
+          dir = []
+          last_class = nil
+          until klass.to_s =~ /^OrigenAppGenerators/
+            dir << "#{template_dir}/#{class_dir(klass)}"
+            last_class = klass
+            klass = klass.superclass
+          end
+          dir << "#{template_dir}/base"
+          klass = last_class
         else
-          dir = File.expand_path("#{Origen.root!}/templates/app_generators/#{dir}", __FILE__)
+          dir = "#{Origen.root!}/templates/app_generators/#{class_dir(klass)}"
         end
-        self.class.source_paths << dir if File.exist?(dir) && !self.class.source_paths.include?(dir)
+        Array(dir).each do |dir|
+          self.class.source_paths << dir if File.exist?(dir) && !self.class.source_paths.include?(dir)
+        end
         klass = klass.superclass
       end
     end
@@ -41,6 +48,16 @@ module OrigenAppGenerators
     end
 
     protected
+
+    def class_dir(klass)
+      names = klass.to_s.split('::')
+      names.shift
+      names.map(&:underscore).join('/')
+    end
+
+    # def application_class?(klass)
+    #  until klass == OrigenAppGenerators::Base
+    # end
 
     def debugger
       require 'byebug'
@@ -74,7 +91,11 @@ module OrigenAppGenerators
             create_link file[:dest], file[:source]
           end
         elsif file[:type] == :dir || file[:type] == :directory
-          empty_directory(file[:dest] || file[:source])
+          if file[:nokeep]
+            empty_directory(file[:dest] || file[:source])
+          else
+            copy_file('dot_keep', "#{file[:dest]}/.keep")
+          end
         else
           dest = file[:dest] || file[:source]
           if file[:copy] || dest =~ /.erb$/

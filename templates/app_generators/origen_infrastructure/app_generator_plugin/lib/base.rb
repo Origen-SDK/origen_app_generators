@@ -1,37 +1,28 @@
 module <%= @namespace %>
-  # This will be the parent class of all of your plugin generators, it provides a place
-  # to add anything that you want to be added to all of your plugins
-  class Plugin < OrigenAppGenerators::Plugin
-    include Base
-
-    def initialize(*args)
-      # This makes all of your plugins be configured for internal distribution, i.e. rather
-      # than via rubygems.org
-      @audience = :internal
-      super
-    end
-
-    # Any methods added above the protected line will get automatically invoked
-    # at the start of *all* of your plugin generators.
+  # This is a mixin that is included in both the application and plugin
+  # generators, it provides a place to add things that should apply to
+  # all of your applications and plugins
+  module Base
+    # Any helper methods added to this base module will not be automatically invoked,
+    # you must call them from either the top-level application or plugin generators,
+    # or from a child generator.
 
     protected
 
-    # You can add helper methods that you want to make available to all of your plugin
-    # generators here, these will not get called unless a child generator calls them.
-
-    # Here you can modify the default list of files that are included in all of your plugins.
+    # Here you can modify the default list of files that are included in all of your
+    # applications AND plugins.
     #
-    # Since this is a plugin generator, the default list of files comprises the application list,
-    # which you can see here:
+    # See here for the default list of files:
     # https://github.com/Origen-SDK/origen_app_generators/blob/master/lib/origen_app_generators/application.rb
-    # And this is then modified by the base plugin generator which you can see here:
+    # If the child generator is a plugin, then this list is then modified by the base plugin generator which
+    # you can see here:
     # https://github.com/Origen-SDK/origen_app_generators/blob/master/lib/origen_app_generators/plugin.rb
     #
     # The filelist can contain references to generate files, directories or symlinks in the
-    # new plugin.
+    # new application.
     #
     # To make your generators more maintainable, try and re-use as much as possible
-    # from the parent generator, this means that your generators will automatically stay up
+    # from the parent generators, this means that your generator will automatically stay up
     # to date with the latest conventions.
     #
     # Additional files can be added or removed from the filelist as shown below.
@@ -52,8 +43,8 @@ module <%= @namespace %>
         # list[:pattern_dir] = { dest: "pattern", type: :directory, nokeep: true }
         # Example of how to create a symlink
         # list[:target_default] = { source: 'debug.rb',          # Relative to the file being linked to
-        #                          dest:   'target/default.rb', # Relative to destination_root
-        #                          type:   :symlink }
+        #                           dest:   'target/default.rb', # Relative to destination_root
+        #                           type:   :symlink }
         # Remember to return the final list
         list
       end

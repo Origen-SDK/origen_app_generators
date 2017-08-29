@@ -2,6 +2,8 @@ module <%= @namespace %>
   # This will be the parent class of all of your application generators, it provides a place
   # to add anything that you want to be added to all of your applications
   class Application < OrigenAppGenerators::Application
+    include Base
+
     # Any methods added above the protected line will get automatically invoked
     # at the start of *all* of your application generators.
 
@@ -36,6 +38,8 @@ module <%= @namespace %>
         # list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }
         # Example of how to create a directory
         # list[:pattern_dir] = { dest: "pattern", type: :directory }
+        # By default, directories created in this way will contain a .keep file, to inhibit this:
+        # list[:pattern_dir] = { dest: "pattern", type: :directory, nokeep: true }
         # Example of how to create a symlink
         # list[:target_default] = { source: 'debug.rb',          # Relative to the file being linked to
         #                           dest:   'target/default.rb', # Relative to destination_root

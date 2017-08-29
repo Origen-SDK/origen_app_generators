@@ -1,4 +1,5 @@
 require 'origen_app_generators'
+require '<%= @name %>/base'
 require '<%= @name %>/application'
 require '<%= @name %>/plugin'
 
