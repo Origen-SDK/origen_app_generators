@@ -1,3 +1,19 @@
+<a class="anchor release_tag" name="v1_1_0"></a>
+<h1><a href="#v1_1_0">Tag: v1.1.0</a></h1>
+
+##### Branch: 'master'
+
+##### by Stephen McGinty on 29-Aug-2017 05:48AM
+
+
+* Improvements to the custom app generators application template
+* Improved the source path lookup for custom app generators, now includes
+  a base dir and should now add dirs for any additional sub-classing that
+  is added
+* All directories will now include .keep files by default, though this can
+  be inhibited by setting nokeep: true within the directory definition in
+  the filelist
+
 <a class="anchor release_tag" name="v1_0_1"></a>
 <h1><a href="#v1_0_1">Tag: v1.0.1</a></h1>
 

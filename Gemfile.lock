@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    origen_app_generators (1.0.1)
+    origen_app_generators (1.1.0)
       origen (>= 0.23.0)
 
 GEM
