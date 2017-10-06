@@ -46,6 +46,8 @@ module <%= @namespace %>
         # Alternatively specifying a different destination, typically you would do this when
         # the final location is dynamic
         # list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }
+        # Example of how to recursively copy a directory
+        # list[:copy_dir] = { source: 'src_dir', dest: 'dest_dir', type: :directory, copy: true }
         # Example of how to create a directory
         # list[:pattern_dir] = { dest: "pattern", type: :directory }
         # By default, directories created in this way will contain a .keep file, to inhibit this:
