@@ -1,3 +1,27 @@
+<a class="anchor release_tag" name="v1_1_2"></a>
+<h1><a href="#v1_1_2">Tag: v1.1.2</a></h1>
+
+##### Branch: 'master'
+
+##### by David Welguisz on 16-Oct-2017 12:57PM
+
+
+#### Updates
+*  Added the ability to recursively copy a directory in the app generator
+*  Added examples in the comment section of build\_filelist
+
+<a class="anchor release_tag" name="v1_1_1"></a>
+<h1><a href="#v1_1_1">Tag: v1.1.1</a></h1>
+
+##### Branch: 'master'
+
+##### by David Welguisz on 06-Oct-2017 13:05PM
+
+
+#### Updates
+*  Added the ability to recursively copy a directory in the app generator
+*  Added examples in the comment section of build\_filelist
+
 <a class="anchor release_tag" name="v1_1_0"></a>
 <h1><a href="#v1_1_0">Tag: v1.1.0</a></h1>
 
