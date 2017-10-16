@@ -92,7 +92,11 @@ module OrigenAppGenerators
           end
         elsif file[:type] == :dir || file[:type] == :directory
           if file[:copy]
-            directory(file[:dest] || file[:source])
+            if (file.key? :dest) && (file.key? :source)
+              directory(file[:source], file[:dest])
+            else
+              directory(file[:dest] || file[:source])
+            end
           elsif file[:nokeep]
             empty_directory(file[:dest] || file[:source])
           else
