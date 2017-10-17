@@ -1,3 +1,14 @@
+<a class="anchor release_tag" name="v1_1_3"></a>
+<h1><a href="#v1_1_3">Tag: v1.1.3</a></h1>
+
+##### Branch: 'master'
+
+##### by David Welguisz on 17-Oct-2017 11:33AM
+
+
+#### Bug Fix
+*  Previous release had it that copying directories could only happen if they had the same destination and source name.  Now source and destination directory can be different. 
+
 <a class="anchor release_tag" name="v1_1_2"></a>
 <h1><a href="#v1_1_2">Tag: v1.1.2</a></h1>
 
