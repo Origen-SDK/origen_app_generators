@@ -9,6 +9,7 @@
 
 # Origen local files
 /.bundle
+.project
 /target/.default
 /environment/.default
 /release_note.txt
