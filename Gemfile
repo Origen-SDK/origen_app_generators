@@ -11,5 +11,6 @@ gemspec
 # PRESENT AS PART OF A STANDARD RGEN INSTALLATION - I.E. YOU CAN ONLY RELY
 # ON THE GEMS THAT RGEN ITSELF DEPENDS ON.
 
-gem 'byebug'
+gem 'byebug', '< 9.1.0'
 gem 'origen_updater'
+gem 'origen', path: '/proj/d4e/users/welguisz/origen'
