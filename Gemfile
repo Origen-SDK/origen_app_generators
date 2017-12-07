@@ -13,4 +13,4 @@ gemspec
 
 gem 'byebug', '< 9.1.0'
 gem 'origen_updater'
-gem 'origen', path: '/proj/d4e/users/welguisz/origen'
+gem 'origen'
