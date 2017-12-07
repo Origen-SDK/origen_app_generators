@@ -1,3 +1,14 @@
+<a class="anchor release_tag" name="v1_1_4"></a>
+<h1><a href="#v1_1_4">Tag: v1.1.4</a></h1>
+
+##### Branch: 'master'
+
+##### by David Welguisz on 07-Dec-2017 10:23AM
+
+
+#### Bug Fix
+*  Gemfile.lock was bad.  Had windows specific gems.  This one is clean.
+
 <a class="anchor release_tag" name="v1_1_3"></a>
 <h1><a href="#v1_1_3">Tag: v1.1.3</a></h1>
 
