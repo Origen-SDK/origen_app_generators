@@ -25,7 +25,6 @@ begin
   Dir.chdir tmp_dir do
     # For some reason this is not being defined by require origen anymore
     User = Origen::Users::User unless defined? User
-    require 'byebug'
     require 'origen_app_generators'
     load_generators = ARGV.shift
     OrigenAppGenerators.unload_generators unless ARGV[0]

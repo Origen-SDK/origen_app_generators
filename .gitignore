@@ -9,6 +9,7 @@
 
 # Origen local files
 /.bundle
+/.origen
 .project
 /target/.default
 /environment/.default
