@@ -44,6 +44,7 @@ module OrigenAppGenerators
     end
 
     def get_lastest_origen_version
+      ENV['RUBYGEMS_HOST'] = "http://rubygems.org"
       @latest_origen_version = (Gems.info 'origen')['version']
     end
 
