@@ -42,9 +42,9 @@ END
         if op.to_s == 'default'
           target_load_test_required = true
           ['origen -v',
-           'origen lint --no-correct',
+           'bundle exec origen lint --no-correct',
            'bundle exec rake new_app_tests:load_target',
-           'origen web compile --no-serve'
+           'bundle exec origen web compile --no-serve'
           ]
         elsif op.to_s == 'load_target'
           target_load_test_required = true
