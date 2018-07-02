@@ -41,11 +41,13 @@ END
       post_build_operations = post_build_operations.map do |op|
         if op.to_s == 'default'
           target_load_test_required = true
-          ['origen -v',
-           #'origen lint --no-correct',
-           'bundle exec rake new_app_tests:load_target',
-           'origen web compile --no-serve'
-          ]
+          cmds = ['origen -v']
+          # For some reason this command doesn't work in Travis CI, don't know why and
+          # couldn't work out how to fix (looks like a Bundler-related issue)
+          cmds << 'origen lint --no-correct' unless ENV['TRAVIS']
+          cmds << 'bundle exec rake new_app_tests:load_target'
+          cmds << 'origen web compile --no-serve'
+          cmds
         elsif op.to_s == 'load_target'
           target_load_test_required = true
           'rake new_app_tests:load_target'
