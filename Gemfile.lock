@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    origen_app_generators (1.1.4)
+    origen_app_generators (1.2.0)
       origen (>= 0.23.0)
 
 GEM
@@ -144,4 +144,4 @@ DEPENDENCIES
   origen_updater
 
 BUNDLED WITH
-   1.16.0
+   1.16.1

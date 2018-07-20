@@ -1,3 +1,23 @@
+<a class="anchor release_tag" name="v1_2_0"></a>
+<h1><a href="#v1_2_0">Tag: v1.2.0</a></h1>
+
+##### Branch: 'master'
+
+##### by Stephen McGinty on 20-Jul-2018 10:27AM
+
+
+* Added a fall back way of working out the latest Origen version if the default way
+  of fetching it from rubygems.org fails (e.g. due to https connection issues in
+  runtime environment).
+
+* Removed 'https://rubygems.org' as a Gemfile source when the app/plugin type is internal
+  and Origen.site\_config.gem\_server has been configured. Origen.site\_config.gem\_server can
+  be set to an array of sources, so site configurations can put it back in again if they want it.
+
+* Disabled lint checks in the regression command, couldn't work out why it is failing in
+  CI/Travis, though it still works and is enabled when the regression command
+  (origen app\_gen:test -r) is run locally.
+
 <a class="anchor release_tag" name="v1_1_4"></a>
 <h1><a href="#v1_1_4">Tag: v1.1.4</a></h1>
 
