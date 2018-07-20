@@ -44,7 +44,25 @@ module OrigenAppGenerators
     end
 
     def get_lastest_origen_version
-      @latest_origen_version = (Gems.info 'origen')['version']
+      @latest_origen_version ||= begin
+        (Gems.info 'origen')['version']
+      rescue
+        # If the above fails, e.g. due to an SSL error in the runtime environment, try to fetch the
+        # latest Origen version from the Origen website, before finally falling back to the version
+        # we are currently running if all else fails
+        begin
+          require 'httparty'
+          response = HTTParty.get('http://origen-sdk.org/origen/release_notes/')
+          version = Origen::VersionString.new(response.body.match(/Tag: v(\d+\.\d+.\d+)</).to_a.last)
+          if version.valid?
+            version
+          else
+            fail "Can't get the latest version!"
+          end
+        rescue
+          Origen.version
+        end
+      end
     end
 
     protected

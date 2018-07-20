@@ -1,6 +1,9 @@
-source 'https://rubygems.org'
 <% if (@audience != :external) && Origen.site_config.gem_server -%>
-source '<%= Origen.site_config.gem_server %>'
+<%   Array(Origen.site_config.gem_server).each do |server| -%>
+source '<%= server %>'
+<%   end -%>
+<% else %>
+source 'https://rubygems.org'
 <% end -%>
 
 gem 'origen', '>= <%= @latest_origen_version %>'
