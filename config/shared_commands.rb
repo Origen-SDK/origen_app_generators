@@ -45,12 +45,12 @@ END
           # For some reason this command doesn't work in Travis CI, don't know why and
           # couldn't work out how to fix (looks like a Bundler-related issue)
           cmds << 'origen lint --no-correct' unless ENV['TRAVIS']
-          cmds << 'bundle exec rake new_app_tests:load_target'
+          cmds << 'bundle exec origen exec tmp/new_app_tests.rb'
           cmds << 'origen web compile --no-serve'
           cmds
         elsif op.to_s == 'load_target'
           target_load_test_required = true
-          'rake new_app_tests:load_target'
+          'origen exec tmp/new_app_tests.rb'
         else
           op
         end
@@ -69,7 +69,8 @@ END
         # The app is successfully built, now see if it works...
         unless post_build_operations.empty?
           if target_load_test_required
-            FileUtils.cp "#{Origen.root!}/lib/tasks/new_app_tests.rake", 'tmp/lib/tasks'
+            FileUtils.mkdir_p('tmp/tmp')
+            FileUtils.cp "#{Origen.root!}/lib/origen_app_generators/new_app_tests.rb", 'tmp/tmp'
           end
 
           operation_failed = false

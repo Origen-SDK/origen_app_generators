@@ -5,6 +5,21 @@ module OrigenAppGenerators
 
     require 'gems'
 
+    def validate_application_name
+      @name = args.first.to_s.strip
+      if @name == ''
+        puts
+        puts "You must supply a name for what you want to call your application: 'origen new my_name'"
+        puts
+        exit 1
+      elsif @name != @name.symbolize.to_s
+        puts
+        puts 'The name of your new app must be lowercased and underscored and contain no special characters'
+        puts
+        exit 1
+      end
+    end
+
     def set_source_paths
       # The base Origen generator puts the Origen core directory on the source path, in retrospect this
       # was a bad idea and makes for hard to debug errors if an app generator resolves a template from
@@ -40,7 +55,9 @@ module OrigenAppGenerators
     end
 
     def get_common_user_input
-      get_name_and_namespace
+      # Don't bother asking the user for this, their life will be easier if they just go with
+      # Origen's default namespace based on their app's name
+      @namespace = @name.to_s.camelize
     end
 
     def get_lastest_origen_version
@@ -131,12 +148,6 @@ module OrigenAppGenerators
         end
       end
       symlink_cmds.each { |cmd| system(cmd) }
-    end
-
-    # Convenience method that is equivalent to calling get_name and then get_namespace
-    def get_name_and_namespace
-      get_name
-      get_namespace
     end
 
     # Prompts the user to confirm or enter the Ruby namespace to be used in the app.

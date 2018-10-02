@@ -6,7 +6,8 @@ source '<%= server %>'
 source 'https://rubygems.org'
 <% end -%>
 
-gem 'origen', '>= <%= @latest_origen_version %>'
+#gem 'origen', '>= <%= @latest_origen_version %>'
+gem 'origen', path: "~/Code/github/origen"
 
 gem 'origen_doc_helpers'
 

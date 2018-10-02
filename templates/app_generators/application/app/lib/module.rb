@@ -10,13 +10,9 @@ module <%= @namespace %>
 
 <% end -%>
   # Example of how to explicitly require a file
-  # require "<%= @name %>/my_file"
-
-  # Load all files in the lib/<%= @name %> directory.
-  # Note that there is no problem from requiring a file twice (Ruby will ignore
-  # the second require), so if you have a file that must be required first, then
-  # explicitly require it up above and then let this take care of the rest.
-  Dir.glob("#{File.dirname(__FILE__)}/<%= @name %>/**/*.rb").sort.each do |file|
-    require file
-  end
+  # require '<%= @name %>/my_class'
+  #
+  # If your application is large, it is usually better to use autoload to keep the boot up
+  # time of your application low, here is the same example using autoload:
+  # autoload :MyClass, '<%= @name %>/my_class'
 end
