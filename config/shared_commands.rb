@@ -7,7 +7,7 @@ when "app_gen:test"
   opt_parser = OptionParser.new do |opts|
     opts.banner = <<-END
 Test the generators by emulating the 'origen new' command execution and building the new
-application into the tmp directory.
+application into the output/my_app directory.
 
 Usage: origen app_gen:test [options]
 END
@@ -21,7 +21,9 @@ END
 
   opt_parser.orig_parse! ARGV
 
-  FileUtils.rm_rf "#{Origen.root}/tmp" if File.exist?("#{Origen.root}/tmp")
+  output_dir = File.join(Origen.root, 'output')
+  FileUtils.rm_rf output_dir if File.exist?(output_dir)
+  FileUtils.mkdir_p output_dir
 
   if options[:inputs] || options[:regression]
     if options[:regression]

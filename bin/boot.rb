@@ -30,8 +30,10 @@ begin
     OrigenAppGenerators.unload_generators unless ARGV[0]
     require load_generators if File.exist?(load_generators)
 
-    OrigenAppGenerators.invoke('tmp')
+    OrigenAppGenerators.invoke('my_app')
   end
 ensure
-  FileUtils.mv "#{tmp_dir}/tmp", 'tmp' if File.exist?("#{tmp_dir}/tmp")
+  FileUtils.mv "#{tmp_dir}/my_app", 'output' if File.exist?("#{tmp_dir}/my_app")
+  puts
+  puts "Ignore the above, your new app is in: output/my_app"
 end

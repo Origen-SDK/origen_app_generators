@@ -33,23 +33,16 @@ module OrigenAppGenerators
         config_prod:        { source: 'config/maillist_prod.txt' },
         doc_history:        { source: 'doc/history' },
         target_default:     { source: 'target/default.rb' },
-        # target_default:     { source: 'debug.rb',          # Relative to the file being linked to
-        #                      dest:   'target/default.rb', # Relative to destination_root
-        #                      type:   :symlink },
+        # target_default:      { source: 'debug.rb',          # Relative to the file being linked to
+        #                       dest:   'target/default.rb', # Relative to destination_root
+        #                       type:   :symlink },
         environment_dir:    { dest: 'environment', type: :directory },
         lib_module:         { source: 'app/lib/module.rb',
                               dest:   "app/lib/#{@name}.rb" },
         lib_module_dir:     { dest:   "app/lib/#{@name}", type: :directory },
-        models_dir:         { dest:   'app/models', type: :directory },
-        controllers_dir:    { dest:   'app/controllers', type: :directory },
+        app_parts_dir:      { dest:   'app/parts', type: :directory },
         patterns_dir:       { dest:   'app/patterns', type: :directory },
         flows_dir:          { dest:   'app/flows', type: :directory },
-        app_pins:           { source: "#{Origen.top}/templates/code_generators/pins.rb",
-                              dest:   'app/pins/application.rb' },
-        app_timesets:       { source: "#{Origen.top}/templates/code_generators/timesets.rb",
-                              dest:   'app/timesets/application.rb' },
-        app_parameters:     { source: "#{Origen.top}/templates/code_generators/parameters.rb",
-                              dest:   'app/parameters/application.rb' },
         spec_helper:        { source: 'test/spec/spec_helper.rb' },
         web_index:          { source: 'app/templates/web/index.md.erb' },
         web_basic_layout:   { source: 'app/templates/web/layouts/_basic.html.erb' },
@@ -64,7 +57,7 @@ module OrigenAppGenerators
         session:            { source: 'origen_core_session',
                               dest:   '.session/origen_core',
                               copy:   true
-                            }
+                             }
       }
     end
   end

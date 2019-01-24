@@ -12,6 +12,5 @@ gemspec
 # ON THE GEMS THAT RGEN ITSELF DEPENDS ON.
 
 gem 'byebug', '< 9.1.0'
-gem 'origen_updater'
 #gem 'origen'
 gem 'origen', path: "~/Code/github/origen"

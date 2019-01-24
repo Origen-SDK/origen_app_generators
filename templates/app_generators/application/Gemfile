@@ -7,13 +7,12 @@ source 'https://rubygems.org'
 <% end -%>
 
 #gem 'origen', '>= <%= @latest_origen_version %>'
-gem 'origen', path: "~/Code/github/origen"
+gem 'origen', git: 'https://github.com/Origen-SDK/origen.git', branch: 'app_dir'
 
 gem 'origen_doc_helpers'
 
-gem 'byebug'
-
-gem 'origen_updater'
+gem 'byebug', '~>8'  # You can remove this version constraint if you don't care about your app
+                     # supporting earlier versions of Ruby 2
 
 # Uncomment these if you want to use a visual debugger (e.g. Visual Studio Code) to debug your app
 #gem 'ruby-debug-ide'

@@ -1,8 +1,7 @@
 module OrigenAppGenerators
   # The base generator class that should be used by all plugin generators
   class Plugin < Application
-    def get_common_user_input
-      get_name_and_namespace
+    def get_additional_user_input
       get_summary
       get_audience unless @audience
     end
@@ -26,8 +25,8 @@ module OrigenAppGenerators
         else
           list[:web_navbar] = { source: 'templates/web/partials/_navbar_internal.html.erb', dest: 'templates/web/partials/_navbar.html.erb' }
         end
-        list[:lib_readme] = { source: 'lib/README', dest: "lib/#{@name}/README" }
-        list[:lib_readme_dev] = { source: 'lib_dev/README', dest: "lib/#{@name}_dev/README" }
+        # list[:lib_readme] = { source: 'lib/README', dest: "lib/#{@name}/README" }
+        # list[:lib_readme_dev] = { source: 'lib_dev/README', dest: "lib/#{@name}_dev/README" }
         list
       end
     end
