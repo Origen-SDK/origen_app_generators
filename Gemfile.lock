@@ -1,5 +1,7 @@
-PATH
-  remote: ../origen
+GIT
+  remote: https://github.com/Origen-SDK/origen.git
+  revision: d410fac5e0416af54151449fbca72c0f201d039f
+  branch: app_dir
   specs:
     origen (0.42.0)
       activesupport (~> 4.1)

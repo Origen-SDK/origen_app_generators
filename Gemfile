@@ -13,4 +13,5 @@ gemspec
 
 gem 'byebug', '< 9.1.0'
 #gem 'origen'
-gem 'origen', path: "~/Code/github/origen"
+#gem 'origen', path: "~/Code/github/origen"
+gem 'origen', git: 'https://github.com/Origen-SDK/origen.git', branch: 'app_dir'
