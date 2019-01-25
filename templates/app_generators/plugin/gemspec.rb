@@ -21,11 +21,12 @@ Gem::Specification.new do |spec|
   # packaged gem, the default should hit everything in most cases but this will
   # need to be added to if you have any custom directories
   spec.files         = Dir["lib/<%= @name %>.rb", "lib/<%= @name %>/**/*.rb", "templates/**/*", "config/**/*.rb",
-                           "bin/*", "lib/tasks/**/*.rake", "pattern/**/*.rb",
-                           "program/**/*.rb"
+                           "bin/*", "lib/tasks/**/*.rake", "pattern/**/*.rb", "program/**/*.rb",
+                           "app/lib/<%= @name %>.rb", "app/lib/<%= @name %>/**/*.rb", "app/templates/**/*",
+                           "app/patterns/**/*.rb", "app/flows/**/*.rb", "app/parts/**/*.rb"
                           ]
   spec.executables   = []
-  spec.require_paths = ["lib"]
+  spec.require_paths = ["lib", "app/lib"]
 
   # Add any gems that your plugin needs to run within a host application
   spec.add_runtime_dependency "origen", ">= <%= @latest_origen_version %>"
