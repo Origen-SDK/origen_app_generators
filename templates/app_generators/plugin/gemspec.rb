@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.files         = Dir["lib/<%= @name %>.rb", "lib/<%= @name %>/**/*.rb", "templates/**/*", "config/**/*.rb",
                            "bin/*", "lib/tasks/**/*.rake", "pattern/**/*.rb", "program/**/*.rb",
                            "app/lib/<%= @name %>.rb", "app/lib/<%= @name %>/**/*.rb", "app/templates/**/*",
-                           "app/patterns/**/*.rb", "app/flows/**/*.rb", "app/parts/**/*.rb"
+                           "app/patterns/**/*.rb", "app/flows/**/*.rb", "app/models/**/*.rb"
                           ]
   spec.executables   = []
   spec.require_paths = ["lib", "app/lib"]
