@@ -10,6 +10,11 @@ source 'https://rubygems.org'
 gem 'origen', git: 'https://github.com/Origen-SDK/origen.git', branch: 'app_dir'
 
 gem 'origen_doc_helpers'
+<% if @development_dependencies -%>  
+  <% @development_dependencies.each do |dep| -%>
+gem <%= dep.map{ |d| "\"#{d}\"" }.join(', ') %>
+  <% end -%>
+<% end -%>
 
 gem 'byebug', '~>8'  # You can remove this version constraint if you don't care about your app
                      # supporting earlier versions of Ruby 2

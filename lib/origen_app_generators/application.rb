@@ -41,7 +41,7 @@ module OrigenAppGenerators
                               dest:   "app/lib/#{@name}.rb" },
         lib_module_dir:     { dest:   "app/lib/#{@name}", type: :directory },
         app_models_dir:     { dest:   'app/models', type: :directory },
-        spec_helper:        { source: 'test/spec/spec_helper.rb' },
+        spec_helper:        { source: 'spec/spec_helper.rb' },
         web_index:          { source: 'app/templates/web/index.md.erb' },
         web_basic_layout:   { source: 'app/templates/web/layouts/_basic.html.erb' },
         web_navbar:         { source: 'app/templates/web/partials/_navbar.html.erb' },

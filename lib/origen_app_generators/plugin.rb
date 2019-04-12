@@ -18,15 +18,13 @@ module OrigenAppGenerators
         list.delete(:web_installation)
         list.delete(:web_introduction)
         list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }
-        list[:templates_shared] = { dest: 'templates/shared', type: :directory }
+        list[:templates_shared] = { dest: 'app/templates/shared', type: :directory }
         if @audience == :external
           list[:travis] = { source: '.travis.yml' }
-          list[:web_navbar] = { source: 'templates/web/partials/_navbar_external.html.erb', dest: 'templates/web/partials/_navbar.html.erb' }
+          list[:web_navbar] = { source: 'app/templates/web/partials/_navbar_external.html.erb', dest: 'app/templates/web/partials/_navbar.html.erb' }
         else
-          list[:web_navbar] = { source: 'templates/web/partials/_navbar_internal.html.erb', dest: 'templates/web/partials/_navbar.html.erb' }
+          list[:web_navbar] = { source: 'app/templates/web/partials/_navbar_internal.html.erb', dest: 'app/templates/web/partials/_navbar.html.erb' }
         end
-        # list[:lib_readme] = { source: 'lib/README', dest: "lib/#{@name}/README" }
-        # list[:lib_readme_dev] = { source: 'lib_dev/README', dest: "lib/#{@name}_dev/README" }
         list
       end
     end

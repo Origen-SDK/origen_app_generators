@@ -2,6 +2,8 @@ module OrigenAppGenerators
   module TestEngineering
     # Generates a generic application shell
     class StandAloneApplication < Application
+      include Common
+
       desc 'A stand alone test engineering application'
 
       # Any methods that are not protected will get invoked in the order that they are
@@ -15,8 +17,9 @@ module OrigenAppGenerators
       end
 
       def generate_files
-        # Calling this will build all files, directories and symlinks contained in the
-        # hash returned by the filelist method
+        @development_dependencies = [
+          ['origen_testers']
+        ]
         build_filelist
       end
 
@@ -35,7 +38,7 @@ module OrigenAppGenerators
       protected
 
       # Defines the filelist for the generator, the default list is inherited from the
-      # parent class (Application).
+      # parent class (Plugin).
       # The filelist can contain references to generate files, directories or symlinks in the
       # new application.
       #
@@ -43,31 +46,16 @@ module OrigenAppGenerators
       # from the parent generator, this means that your generator will automatically stay up
       # to date with the latest conventions
       #
-      # The master templates live in templates/app_generators/application, but
+      # The master templates live in templates/app_generators/plugin, but
       # DO NOT MODIFY THESE FILES DIRECTLY.
       # Either add or remove things post-generation in the modify_files method or copy the
-      # master file to the equivalent sub-directory of templates/app_generators/test_engineering/generic_stand_alone_application
+      # master file to the equivalent sub-directory of templates/app_generators/test_engineering/mpg_test_block
       # which will override the version in the master directory.
       #
       # Additional files can be added or removed from the filelist as shown below.
       def filelist
         @filelist ||= begin
-          list = super  # Always pick up the parent list
-          # Example of how to remove a file from the parent list
-          # list.delete(:lib_top_level)
-          list[:environment_j750] = { source: 'environment/j750.rb' }
-          list[:environment_uflex] = { source: 'environment/uflex.rb' }
-          list[:environment_v93k] = { source: 'environment/v93k.rb' }
-          # Alternatively specifying a different destination, typically you would do this when
-          # the final location is dynamic
-          # list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }
-          # Example of how to create a directory
-          # list[:pattern_dir] = { dest: "pattern", type: :directory }
-          # Example of how to create a symlink
-          # Test engineering source directories
-          list[:patterns_dir] = { dest: 'app/patterns', type: :directory }
-          list[:flows_dir]    = { dest: 'app/flows', type: :directory }
-          # Remember to return the final list
+          list = common_filelist(super)  # Always pick up the parent list
           list
         end
       end

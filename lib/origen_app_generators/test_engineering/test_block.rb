@@ -2,6 +2,8 @@ module OrigenAppGenerators
   module TestEngineering
     # Generates a generic plugin shell
     class TestBlock < Plugin
+      include Common
+
       desc 'An IP test module intended to plugin into a top-level (SoC) application'
 
       def initialize(*args)
@@ -13,8 +15,6 @@ module OrigenAppGenerators
         # The methods to get the common user input that applies to all applications will
         # get called at the start automatically, you have a chance here to ask any additional
         # questions that are specific to the type of application being generated
-        get_ip_names
-        get_sub_block_name
       end
 
       def generate_files
@@ -25,71 +25,14 @@ module OrigenAppGenerators
       end
 
       def final_modifications
-        prepend_to_file "lib/#{@name}.rb", "require 'origen_testers'\n"
-        # Add require line
-        doc_helpers = /gem 'origen_doc_helpers'/
-        inject_into_file 'Gemfile', "\ngem 'origen_jtag'\ngem 'origen_arm_debug'\n",
-                         after: doc_helpers
+        prepend_to_file "app/lib/#{@name}.rb", "require 'origen_testers'\n"
       end
 
       def conclude
         puts "New test module created at: #{destination_root}"
-        puts
-        puts 'Generate an example pattern by running "origen g example"'
       end
 
       protected
-
-      def get_ip_names
-        puts
-        puts 'NAME THE IP BLOCKS THAT THIS MODULE WILL SUPPORT'
-        puts
-        puts "You don't need to name them all up front, but you must declare at least one."
-        puts 'We recommend that you use the official name(s) for the IP(s) as used by your design team.'
-        puts 'Separate multiple names with a comma:    FLASH_C40_512K, FLASH_C40_2M'
-        puts
-
-        valid = false
-        until valid
-          @ip_names = get_text(single: true).strip.split(',').map do |name|
-            n = name.strip.symbolize.to_s.upcase
-            unless n.empty?
-              n
-            end
-          end.compact
-          unless @ip_names.empty?
-            # Should we check anything here?
-            valid = true
-          end
-        end
-        @ip_names
-      end
-
-      def get_sub_block_name
-        puts
-        puts "WHAT SHOULD BE THE PATH TO #{@ip_names.first} WHEN IT IS INSTANTIATED IN AN SOC?"
-        puts
-        puts 'Your IP(s) will be instantiated by a top-level (SoC) model, at which point it should be given a generic nickname'
-        puts 'that will provide an easy way to access it.'
-        puts 'For example, if you had an IP model for an NVM block, the IP name might be "FLASH_C40_512K_128K", but when it is'
-        puts 'instantiated it would be given the name "flash", allowing it be easily accessed as "dut.flash".'
-        puts
-
-        valid = false
-        until valid
-          @sub_block_name = get_text(single: true).strip.split(',').map do |name|
-            n = name.strip.symbolize.to_s.downcase
-            unless n.empty?
-              n
-            end
-          end.compact
-          unless @sub_block_name.empty?
-            # Should we check anything here?
-            valid = true
-          end
-        end
-        @sub_block_name = @sub_block_name.first
-      end
 
       # Defines the filelist for the generator, the default list is inherited from the
       # parent class (Plugin).
@@ -109,51 +52,7 @@ module OrigenAppGenerators
       # Additional files can be added or removed from the filelist as shown below.
       def filelist
         @filelist ||= begin
-          list = super  # Always pick up the parent list
-          # Example of how to remove a file from the parent list
-          list.delete(:target_debug)
-          list.delete(:target_production)
-          # Example of how to add a file, in this case the file will be compiled and copied to
-          # the same location in the new app
-          list[:target_default] = { source: 'target/default.rb' }
-          list[:environment_v93k] = { source: 'environment/v93k.rb' }
-          list[:environment_j750] = { source: 'environment/j750.rb' }
-          list[:environment_ultraflex] = { source: 'environment/ultraflex.rb' }
-          list[:program_prb1] = { source: 'program/prb1.rb' }
-          list[:lib_interface] = { source: 'lib/interface.rb', dest: "lib/#{@name}/interface.rb" }
-          # Alternatively specifying a different destination, typically you would do this when
-          # the final location is dynamic
-          # list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }
-          # Example of how to create a directory
-          list[:pattern_dir] = { dest: 'pattern', type: :directory }
-          # Example of how to create a symlink
-          list[:environment_default] = { source: 'ultraflex.rb',           # Relative to the file being linked to
-                                         dest:   'environment/default.rb', # Relative to destination_root
-                                         type:   :symlink }
-          list[:dev_dut] = { source:  'lib_dev/dut.rb',
-                             dest:    "lib/#{@name}_dev/dut.rb",
-                             options: { class_name: @ip_names.first, sub_block_name: @sub_block_name }
-                           }
-          list[:dev_dutc] = { source: 'lib_dev/dut_controller.rb',
-                              dest:   "lib/#{@name}_dev/dut_controller.rb"
-                            }
-
-          @ip_names.each_with_index do |name, i|
-            list["ip_#{i}"] = { source:  'lib/model.rb',
-                                dest:    "lib/#{@name}/#{name.underscore}.rb",
-                                options: { name: name }
-                              }
-
-            list["ip_controller_#{i}"] = { source:  'lib/controller.rb',
-                                           dest:    "lib/#{@name}/#{name.underscore}_controller.rb",
-                                           options: { name: name }
-                                         }
-          end
-
-          list[:pattern_example] = { source:  'pattern/example.rb',
-                                     options: { sub_block_name: @sub_block_name }
-                                   }
-          # Remember to return the final list
+          list = common_filelist(super)  # Always pick up the parent list
           list
         end
       end

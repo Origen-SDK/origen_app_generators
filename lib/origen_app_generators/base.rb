@@ -40,7 +40,10 @@ module OrigenAppGenerators
           dir << "#{template_dir}/base"
           klass = last_class
         else
-          dir = "#{Origen.root!}/templates/app_generators/#{class_dir(klass)}"
+          dir = []
+          class_dirs(klass).each do |class_dir|
+            dir << "#{Origen.root!}/templates/app_generators/#{class_dir}"
+          end
         end
         Array(dir).each do |dir|
           self.class.source_paths << dir if File.exist?(dir) && !self.class.source_paths.include?(dir)
@@ -88,6 +91,17 @@ module OrigenAppGenerators
       names = klass.to_s.split('::')
       names.shift
       names.map(&:underscore).join('/')
+    end
+
+    def class_dirs(klass)
+      names = klass.to_s.split('::')
+      names.shift
+      dirs = []
+      until names.empty?
+        dirs << names.map(&:underscore).join('/')
+        names.pop
+      end
+      dirs
     end
 
     # def application_class?(klass)
