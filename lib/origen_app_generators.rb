@@ -20,11 +20,11 @@ module OrigenAppGenerators
     # 1 - Empty plugin
     ['0', '1', :default, :default, 'A test block', 'yes', :default],
     # 2 - Stand alone test engineering app
-    ['2', '0', :default, :default, 'Falcon, Eagle', 'Falcon[ram, atd(2), comm[ram(2), osc](3)], Eagle[ram(2), atd(4)]', [:default, 'origen g example']],
-    # 3 - Test module
-    ['2', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', [:default, 'origen g example']],
-    # 4 - An app generators plugin
-    ['1', '0', :default, :default, 'My application generators', :default]
+    ['2', '0', [:default]],
+    #    # 3 - Test module
+    #    ['2', '1', :default, :default, 'Test module for all flash IPs', 'FLASH_512K, FLASH_1024K', 'flash', [:default, 'origen g example']],
+    #    # 4 - An app generators plugin
+    #    ['1', '0', :default, :default, 'My application generators', :default]
   ] # END_OF_TEST_INPUTS Don't remove this comment, it is used by the app_gen:new command!
 
   # As you add new generators to this app they will be entered here, this enables the

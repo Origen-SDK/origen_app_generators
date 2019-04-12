@@ -10,6 +10,8 @@ Test the generators by emulating the 'origen new' command execution and building
 application into the output/my_app directory.
 
 Usage: origen app_gen:test [options]
+       origen app_gen:test --regression             # Test all generators
+       origen app_gen:test --inputs 0               # Test with user inputs set 0
 END
     opts.on('-d', '--debugger', 'Enable the debugger') {  options[:debugger] = true }
     opts.on('-i', '--inputs INDEX', Integer, "Apply the set of test inputs defined in #{Origen.app.namespace}::TEST_INPUTS[INDEX]") { |f| options[:inputs] = f }
@@ -71,13 +73,13 @@ END
         # The app is successfully built, now see if it works...
         unless post_build_operations.empty?
           if target_load_test_required
-            FileUtils.mkdir_p('tmp/tmp')
-            FileUtils.cp "#{Origen.root!}/lib/origen_app_generators/new_app_tests.rb", 'tmp/tmp'
+            FileUtils.mkdir_p('output/my_app/tmp')
+            FileUtils.cp "#{Origen.root!}/lib/origen_app_generators/new_app_tests.rb", 'output/my_app/tmp'
           end
 
           operation_failed = false
           Bundler.with_clean_env do
-            Dir.chdir "#{Origen.root}/tmp" do
+            Dir.chdir "#{Origen.root}/output/my_app" do
               post_build_operations.each_with_index do |op, i|
                 if i == 0 && !Origen.site_config.gem_manage_bundler
                   system('bundle')
