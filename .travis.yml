@@ -6,7 +6,7 @@ rvm:
 script:
   - gem install bundler -v 1.17.3
   - bundle exec origen -v
-  - bundle exec origen specs
+    #- bundle exec origen specs
   - bundle exec origen app_gen:test --regression
     #- bundle exec origen web compile --no-serve
   - bundle exec origen lint --no-correct

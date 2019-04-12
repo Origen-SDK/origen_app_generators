@@ -56,8 +56,8 @@ when "specs"
 ## origen -h, you can do this be assigning the required text to @application_commands
 ## before handing control back to Origen. Un-comment the example below to get started.
 else
-  @application_commands = <<-EOT
- specs        Run the specs (tests), -c will enable coverage
-  EOT
+#  @application_commands = <<-EOT
+# specs        Run the specs (tests), -c will enable coverage
+#  EOT
 
 end 
