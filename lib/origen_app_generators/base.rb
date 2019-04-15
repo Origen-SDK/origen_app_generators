@@ -43,6 +43,7 @@ module OrigenAppGenerators
           dir = []
           class_dirs(klass).each do |class_dir|
             dir << "#{Origen.root!}/templates/app_generators/#{class_dir}"
+            dir << "#{Origen.root!}/app/templates/app_generators/#{class_dir}"
           end
         end
         Array(dir).each do |dir|

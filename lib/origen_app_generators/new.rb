@@ -28,13 +28,13 @@ module OrigenAppGenerators
 
       # **** Add require line ****
       module_declaration = /\nmodule #{Origen.app.namespace}/
-      inject_into_file "lib/#{Origen.app.name}.rb", "require '#{Origen.app.name}/#{@domain_namespace.underscore}/#{@classname.underscore}'\n",
+      inject_into_file "#{app_dir}lib/#{Origen.app.name}.rb", "require '#{Origen.app.name}/#{@domain_namespace.underscore}/#{@classname.underscore}'\n",
                        before: module_declaration
 
       # **** Add to the AVAILABLE hash ****
       if available[@domain_summary]
         existing_domain = /\s*('|")#{@domain_summary}('|") => \[\s*\n/
-        inject_into_file "lib/#{Origen.app.name}.rb", "      #{Origen.app.namespace}::#{@domain_namespace}::#{@classname},\n",
+        inject_into_file "#{app_dir}lib/#{Origen.app.name}.rb", "      #{Origen.app.namespace}::#{@domain_namespace}::#{@classname},\n",
                          after: existing_domain
       else
         new_domain = <<-END
@@ -43,7 +43,7 @@ module OrigenAppGenerators
     ],
         END
         available_hash = /AVAILABLE = {\s*\n/
-        inject_into_file "lib/#{Origen.app.name}.rb", new_domain, after: available_hash
+        inject_into_file "#{app_dir}lib/#{Origen.app.name}.rb", new_domain, after: available_hash
       end
 
       # **** Add a starter set of test inputs ****
@@ -59,11 +59,11 @@ module OrigenAppGenerators
       if @parentclass == 'Plugin'
         inputs += "    ['#{first}', '#{second}', :default, :default, 'A cool plugin', 'yes', :default]"
       else
-        inputs += "    ['#{first}', '#{second}', :default, :default, :default]"
+        inputs += "    ['#{first}', '#{second}', :default]"
       end
       inputs = ",#{inputs}" unless test_inputs.empty?
       end_of_test_inputs = /\n\s*\]\s*#\s*END_OF_TEST_INPUTS/
-      inject_into_file "lib/#{Origen.app.name}.rb", inputs, before: end_of_test_inputs
+      inject_into_file "#{app_dir}lib/#{Origen.app.name}.rb", inputs, before: end_of_test_inputs
     end
 
     # Can't compile this as contains some final ERB, so substitute instead
@@ -78,7 +78,7 @@ module OrigenAppGenerators
     # end
 
     def conclude
-      system "origen lint #{Origen.root}/lib/#{Origen.app.name}.rb"
+      system "origen lint #{Origen.root}/#{app_dir}lib/#{Origen.app.name}.rb"
       puts
       puts "New generator created at: #{filelist[:generator][:dest]}"
       puts
@@ -89,6 +89,14 @@ module OrigenAppGenerators
     end
 
     protected
+
+    def app_dir
+      if File.exist?("#{Origen.root}/app/lib")
+        'app/'
+      else
+        ''
+      end
+    end
 
     def get_summary
       puts
@@ -151,11 +159,11 @@ module OrigenAppGenerators
     def filelist
       @filelist ||= {
         generator:     { source: 'generator.rb',
-                         dest:   "lib/#{Origen.app.name}/#{@domain_namespace.underscore}/#{@classname.underscore}.rb" },
-        templates_dir: { dest: "templates/app_generators/#{@domain_namespace.underscore}/#{@classname.underscore}",
+                         dest:   "#{app_dir}lib/#{Origen.app.name}/#{@domain_namespace.underscore}/#{@classname.underscore}.rb" },
+        templates_dir: { dest: "#{app_dir}templates/app_generators/#{@domain_namespace.underscore}/#{@classname.underscore}",
                          type: :directory },
         # doc_info:      { source: 'info.md.erb',
-        #                 dest:   "templates/web/#{Origen.app.name}/#{@domain_namespace.underscore}/#{@classname.underscore}.md.erb" }
+        #                 dest:   "#{app_dir}templates/web/#{Origen.app.name}/#{@domain_namespace.underscore}/#{@classname.underscore}.md.erb" }
       }
     end
   end

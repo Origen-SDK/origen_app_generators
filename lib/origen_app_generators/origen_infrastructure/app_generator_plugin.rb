@@ -77,23 +77,21 @@ module OrigenAppGenerators
           list = super  # Always pick up the parent list
           # Example of how to remove a file from the parent list
           # list.delete(:web_doc_layout)
-          list.delete(:lib_readme)
-          list.delete(:lib_readme_dev)
           list.delete(:templates_shared)
           # Example of how to add a file, in this case the file will be compiled and copied to
           # the same location in the new app
           # list[:config_shared_commands] = { source: 'config/shared_commands.rb' }
           list[:config_load_generators] = { source: 'config/load_generators.rb' }
-          list[:lib_base] = { source: 'lib/base.rb', dest: "lib/#{@name}/base.rb" }
-          list[:lib_plugin] = { source: 'lib/plugin.rb', dest: "lib/#{@name}/plugin.rb" }
-          list[:lib_application] = { source: 'lib/application.rb', dest: "lib/#{@name}/application.rb" }
+          list[:lib_base] = { source: 'app/lib/base.rb', dest: "app/lib/#{@name}/base.rb" }
+          list[:lib_plugin] = { source: 'app/lib/plugin.rb', dest: "app/lib/#{@name}/plugin.rb" }
+          list[:lib_application] = { source: 'app/lib/application.rb', dest: "app/lib/#{@name}/application.rb" }
           # Alternatively specifying a different destination, typically you would do this when
           # the final location is dynamic
           # list[:gemspec] = { source: 'gemspec.rb', dest: "#{@name}.gemspec" }
           # Example of how to create a directory
-          list[:templates_app] = { dest: 'templates/app_generators/application', type: :directory }
-          list[:templates_plugin] = { dest: 'templates/app_generators/plugin', type: :directory }
-          list[:templates_base] = { dest: 'templates/app_generators/base', type: :directory }
+          list[:templates_app] = { dest: 'app/templates/app_generators/application', type: :directory }
+          list[:templates_plugin] = { dest: 'app/templates/app_generators/plugin', type: :directory }
+          list[:templates_base] = { dest: 'app/templates/app_generators/base', type: :directory }
           # By default, directories created in this way will contain a .keep file, to inhibit this:
           # list[:pattern_dir] = { dest: "pattern", type: :directory, nokeep: true }
           # Example of how to create a symlink

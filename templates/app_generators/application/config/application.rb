@@ -77,7 +77,7 @@ class <%= @namespace %>Application < Origen::Application
   #     system command
   #   end
   # end
-<% if @validate_release_tests %>  
+<% if @validate_release_tests -%>
   # Ensure that all tests pass before allowing a release to continue
   def validate_release
     if <%= Array(@validate_release_tests).map { |t| "!system('#{t}')" }.join(' || ') %>
@@ -87,7 +87,7 @@ class <%= @namespace %>Application < Origen::Application
       puts 'All tests passing, proceeding with release process!'
     end
   end
-<% else %>
+<% else -%>
   # Ensure that all tests pass before allowing a release to continue
   # def validate_release
   #   if !system('origen specs') || !system('origen examples')

@@ -25,8 +25,8 @@ module OrigenAppGenerators
     # 3 - Test module
     # ['2', '1', 'Test module for all flash IPs', [:default, 'origen g example']],
     ['2', '1', 'Test module for all flash IPs', :default],
-    #    # 4 - An app generators plugin
-    #    ['1', '0', :default, :default, 'My application generators', :default]
+    # 4 - An app generators plugin
+    ['1', '0', 'My application generators', :default]
   ] # END_OF_TEST_INPUTS Don't remove this comment, it is used by the app_gen:new command!
 
   # As you add new generators to this app they will be entered here, this enables the
