@@ -4,7 +4,7 @@ module <%= @namespace %>
     #
     #   origen i
     #
-    #   > $dut.hi
+    #   > dut.hi
     def hi
       puts "Hello master!"
     end
