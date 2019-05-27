@@ -6,8 +6,7 @@ source '<%= server %>'
 source 'https://rubygems.org'
 <% end -%>
 
-#gem 'origen', '>= <%= @latest_origen_version %>'
-gem 'origen', git: 'https://github.com/Origen-SDK/origen.git', branch: 'app_dir'
+gem 'origen', '>= <%= @latest_origen_version %>'
 
 gem 'origen_doc_helpers'
 <% if @development_dependencies -%>  

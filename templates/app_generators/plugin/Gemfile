@@ -22,8 +22,6 @@ gem 'origen_doc_helpers'
 #gem 'ruby-debug-ide'
 #gem 'debase'
 
-gem 'origen', git: 'https://github.com/Origen-SDK/origen.git', branch: 'app_dir'
-
 # Specify your gem's runtime dependencies in <%= @name %>.gemspec
 # THIS LINE SHOULD BE LEFT AT THE END
 gemspec
