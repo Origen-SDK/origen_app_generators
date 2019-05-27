@@ -14,7 +14,6 @@ gemspec
 gem 'byebug', '< 9.1.0'
 #gem 'origen'
 #gem 'origen', path: "~/Code/github/origen"
-gem 'origen', git: 'https://github.com/Origen-SDK/origen.git', branch: 'app_dir'
 
 # Lock this version to enable testing on Ruby 2.2
 gem 'nokogiri', '1.8.5'
