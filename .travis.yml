@@ -4,7 +4,6 @@ rvm:
   - 2.4.0
   - 2.5.1
 script:
-  - gem install bundler -v 1.17.3
   - bundle exec origen -v
     #- bundle exec origen specs
   - bundle exec origen app_gen:test --regression
