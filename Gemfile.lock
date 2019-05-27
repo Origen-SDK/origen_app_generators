@@ -146,7 +146,6 @@ PLATFORMS
 DEPENDENCIES
   byebug (< 9.1.0)
   nokogiri (= 1.8.5)
-  origen (= 0.44.0)
   origen_app_generators!
 
 BUNDLED WITH
