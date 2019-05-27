@@ -1,3 +1,13 @@
+<a class="anchor release_tag" name="v2_0_0"></a>
+<h1><a href="#v2_0_0">Tag: v2.0.0</a></h1>
+
+##### Branch: 'master'
+
+##### by Stephen McGinty on 27-May-2019 09:28AM
+
+
+Generated apps now come with an app/ dir as supported by Origen >= 0.50.0
+
 <a class="anchor release_tag" name="v1_2_0"></a>
 <h1><a href="#v1_2_0">Tag: v1.2.0</a></h1>
 
