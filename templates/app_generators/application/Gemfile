@@ -24,8 +24,8 @@ gem 'byebug', '~>8'  # You can remove this version constraint if you don't care 
 gem 'nokogiri', '1.8.5'
 <% end -%>
 <% if (@audience != :external) && Origen.site_config.gem_push_plugins -%>
-<%   Array(Origen.site_config.gem_push_plugins).each do |plugin| -%>
-gem <%= plugin.map{ |d| "\"#{d}\"" }.join(', ') %>
+<%   Origen.site_config.gem_push_plugins.each do |plugin| -%>
+gem <%= Array(plugin).map{ |d| "\"#{d}\"" }.join(', ') %>
 <%   end -%>
 <% end -%>
 
