@@ -1,5 +1,5 @@
-<% if (@audience != :external) && Origen.site_config.gem_server -%>
-<%   Array(Origen.site_config.gem_server).each do |server| -%>
+<% if (@audience != :external) && (Origen.site_config.gem_server_pull || Origen.site_config.gem_server) -%>
+<%   Array(Origen.site_config.gem_server_pull || Origen.site_config.gem_server).each do |server| -%>
 source '<%= server %>'
 <%   end -%>
 <% else %>
@@ -22,6 +22,11 @@ gem 'byebug', '~>8'  # You can remove this version constraint if you don't care 
 # Lock this version of nokogiri to enable compatibility with Ruby 2.2, if you don't need
 # that then you can remove this line
 gem 'nokogiri', '1.8.5'
+<% end -%>
+<% if (@audience != :external) && Origen.site_config.gem_push_plugins -%>
+<%   Array(Origen.site_config.gem_push_plugins).each do |plugin| -%>
+gem <%= plugin.map{ |d| "\"#{d}\"" }.join(', ') %>
+<%   end -%>
 <% end -%>
 
 # Uncomment these if you want to use a visual debugger (e.g. Visual Studio Code) to debug your app
