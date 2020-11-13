@@ -15,13 +15,7 @@ gem <%= dep.map{ |d| "\"#{d}\"" }.join(', ') %>
   <% end -%>
 <% end -%>
 
-gem 'byebug', '~>8'  # You can remove this version constraint if you don't care about your app
-                     # supporting earlier versions of Ruby 2
-<% if RUBY_VERSION < "2.3.0" -%>
 
-# Lock this version of nokogiri to enable compatibility with Ruby 2.2, if you don't need
-# that then you can remove this line
-gem 'nokogiri', '1.8.5'
 <% end -%>
 <% if (@audience != :external) && Origen.site_config.gem_push_plugins -%>
 <%   Origen.site_config.gem_push_plugins.each do |plugin| -%>
