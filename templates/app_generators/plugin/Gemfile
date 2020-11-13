@@ -13,8 +13,6 @@ source 'https://rubygems.org'
 # your application's test coverage
 gem 'coveralls', require: false
 <% end -%>
-gem 'byebug', '~>8'  # You can remove this version constraint if you don't care about your app
-                     # supporting earlier versions of Ruby 2
 gem 'ripper-tags'
 gem 'origen_doc_helpers'
 <% if (@audience != :external) && Origen.site_config.gem_push_plugins -%>
