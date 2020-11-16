@@ -12,8 +12,9 @@ source 'https://rubygems.org'
 # This gem provides integration with https://coveralls.io/ to monitor
 # your application's test coverage
 gem 'coveralls', require: false
-gem 'byebug'
 <% end -%>
+
+gem 'byebug'
 gem 'ripper-tags'
 gem 'origen_doc_helpers'
 <% if (@audience != :external) && Origen.site_config.gem_push_plugins -%>
