@@ -29,5 +29,3 @@ jobs:
       run: origen m debug
     - name: Run Spec tests
       run: origen app_gen:test --regression
-    - name: Verify Building website
-      run: origen web compile --no-serve
