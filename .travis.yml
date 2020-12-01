@@ -1,15 +1,15 @@
-language: ruby
-rvm:
-  - 2.5.6
-  - 2.6.4
-before_install:
-  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
-  - gem install bundler -v '< 2'
-script:
-  - bundle exec origen -v
-    #- bundle exec origen specs
-  - bundle exec origen app_gen:test --regression
-    #- bundle exec origen web compile --no-serve
-  - bundle exec origen lint --no-correct
-env:
-  - ORIGEN_GEM_USE_FROM_SYSTEM=false ORIGEN_GEM_MANAGE_BUNDLER=false
+# language: ruby
+# rvm:
+#   - 2.5.6
+#   - 2.6.4
+# before_install:
+#   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+#   - gem install bundler -v '< 2'
+# script:
+#   - bundle exec origen -v
+#     #- bundle exec origen specs
+#   - bundle exec origen app_gen:test --regression
+#     #- bundle exec origen web compile --no-serve
+#   - bundle exec origen lint --no-correct
+# env:
+#   - ORIGEN_GEM_USE_FROM_SYSTEM=false ORIGEN_GEM_MANAGE_BUNDLER=false
