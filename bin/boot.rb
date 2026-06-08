@@ -33,7 +33,12 @@ begin
     OrigenAppGenerators.invoke('my_app')
   end
 ensure
-  FileUtils.mv "#{tmp_dir}/my_app", 'output' if File.exist?("#{tmp_dir}/my_app")
+  src = "#{tmp_dir}/my_app"
+  if File.exist?(src)
+    FileUtils.mkdir_p('output')
+    FileUtils.cp_r(src, 'output')   # cross-device safe
+    FileUtils.rm_rf(src)
+  end
   puts
   puts "Ignore the above, your new app is in: output/my_app"
 end
