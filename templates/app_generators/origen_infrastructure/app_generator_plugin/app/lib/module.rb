@@ -15,14 +15,12 @@ module <%= @namespace %>
   # array.
   #
   # You can also execute all sets of test inputs by running: 'origen app_gen:test -r'
-  TEST_INPUTS = [
-  ] # END_OF_TEST_INPUTS Don't remove this comment, it is used by the app_gen:new command!
+  TEST_INPUTS = [] # END_OF_TEST_INPUTS Don't remove this comment, it is used by the app_gen:new command!
 
   # As you add new generators to this app they will be entered here, this enables the
   # mechanism to register them with the 'origen new' command.
   # You should generally not modify this by hand, instead use the 'origen app_gen:new'
   # command every time you want to create a new generator, and this will be filled in
   # for you.
-  AVAILABLE = {
-  }
+  AVAILABLE = {}
 end

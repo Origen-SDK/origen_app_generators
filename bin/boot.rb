@@ -12,12 +12,18 @@ $LOAD_PATH.unshift ARGV.shift
 require 'fileutils'
 require 'origen'
 
+# Resolve temp build dir with precedence:
+#   1. ORIGEN_APP_GEN_TMP_DIR env var (highest, linux-like override)
+#   2. site_config :app_gen_tmp_dir
+#   3. hardcoded platform default (legacy behavior)
 # Prevent the bundle from loading by running this outside of the
-if Origen.os.windows?
-  tmp_dir = 'C:/tmp/my_app_generators/new_app'
-else
-  tmp_dir = '/tmp/my_app_generators/new_app'
-end
+default_tmp = Origen.os.windows? ? 'C:/tmp/my_app_generators/new_app'
+                                 : '/tmp/my_app_generators/new_app'
+
+tmp_dir = ENV['ORIGEN_APP_GEN_TMP_DIR'] ||
+          (Origen.site_config.respond_to?(:app_gen_tmp_dir) && Origen.site_config.app_gen_tmp_dir) ||
+          default_tmp
+
 FileUtils.rm_rf tmp_dir if File.exist?(tmp_dir)
 FileUtils.mkdir_p tmp_dir
 
@@ -33,7 +39,12 @@ begin
     OrigenAppGenerators.invoke('my_app')
   end
 ensure
-  FileUtils.mv "#{tmp_dir}/my_app", 'output' if File.exist?("#{tmp_dir}/my_app")
+  src = "#{tmp_dir}/my_app"
+  if File.exist?(src)
+    FileUtils.mkdir_p('output')
+    FileUtils.cp_r(src, 'output')   # cross-device safe
+    FileUtils.rm_rf(src)
+  end
   puts
   puts "Ignore the above, your new app is in: output/my_app"
 end
